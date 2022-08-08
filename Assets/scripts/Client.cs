@@ -50,7 +50,7 @@ public class Client : MonoBehaviour
  
     void Start()
     {
-        SendData();
+        
     }
 
     // Update is called once per frame
