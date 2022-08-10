@@ -33,8 +33,17 @@ public class GameManager : MonoBehaviour
     //at what point on the map is the battle taking place [0,1]
     public float battle_place = 0.5f;
 
-    
 
+    GameObject Last_friendly_spawned = null;
+    GameObject Last_enemy_spawned = null;
+    public Queue<GameObject> player_troops_queue;
+    public Queue<GameObject> enemy_troops_queue;
+
+    [SerializeField]
+    GameObject troop;
+
+    [SerializeField]
+    int id;
 
     public void pause_game()
     {
@@ -53,13 +62,33 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void spawn_player_troop(int tier)
+    {
+        //tier is 0 1 or 2 (and 3 in the fifth age scenario)
+        int id = (player_age - 1) * 3 + tier;
+        Data.TroopData tr = new Data.TroopData();
+        tr.id = id;
+        tr.set_parameters();
+        Vector3 trans = new Vector3(0f,0f,0f);
+        GameObject gm = Instantiate(troop, trans, Quaternion.identity);
+        Troop troop_script = gm.GetComponent<Troop>();
+
+        troop_script.next_troop = Last_friendly_spawned;
+        troop_script.game_manager = gameObject.GetComponent<GameManager>() ;
+        troop_script.troop_data = tr;
+        troop_script.isPlayer = true;
+        Last_enemy_spawned = gm;
+        player_troops_queue.Enqueue(gm);
+          
+    }
+
     
     
 
 
     void Start()
     {
-        
+        spawn_player_troop(id);
     }
 
     // Update is called once per frame
