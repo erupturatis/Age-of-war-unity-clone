@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Data : MonoBehaviour
 {
@@ -13,8 +14,9 @@ public class Data : MonoBehaviour
         protected int[] troop_melee_damages = { 16, 10, 40, 35, 20, 60, 79, 40, 120, 100, 60, 300, 250, 130, 600, 400 };
         protected int[] troop_ranged_damages = { 0, 8, 0, 0, 20, 0, 0, 20, 0, 0, 30, 0, 0, 80, 0, 400 };
 
-        protected int[] troop_melee_ranges = { 20, 20, 45, 20, 20, 60, 25, 25, 25, 25, 25, 100, 40, 40, 100, 40 };
+        protected int[] troop_melee_ranges = { 20, 20, 20, 20, 20, 20, 25, 25, 25, 25, 25, 20, 20, 20, 20, 20 };
         protected int[] troop_ranged_ranges = { 0, 100, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 150 };
+        protected int[] troop_lengths = { 20, 20, 80, 20, 20, 80, 20, 20, 20, 20, 20, 120, 20, 20, 100, 20 };
 
         // the speed of the initial attack is different from the others
         protected float[] troop_melee_first_speeds = { 0.45f, 0.45f, 0.32f, 0.62f, 0.62f, 0.35f, 0.32f, 0.15f, 0.65f, 0.17f, 0.07f, 0.55f, 0.32f, 0.32f, 0.25f, 0.32f };
@@ -35,13 +37,25 @@ public class Data : MonoBehaviour
         protected int[] turret_range = { 350, 300, 400, 400, 300, 50, 500, 500, 500, 500, 500, 500, 400, 500, 550 };
 
     }
-    public int FPS = 41;
-    public int MAP_LENGTH = 900;
+
+    [System.NonSerialized] public int FPS = 41;
+    [System.NonSerialized] public int MAP_LENGTH = 900;
     //41 frames means 1 second
-    // the map has about 900 units
-    // the  unity map has about 18 units
-    public int COEFF = 50; // the coefficient for converting the unity units into age of war original units
-    public int MIN_DISTANCE = 20;
+    // the original game map has 900 units
+    // the  unity map has 18 units
+    [System.NonSerialized] public int COEFF = 50; // the coefficient for converting the unity units into age of war original units
+    [System.NonSerialized] public int MIN_DISTANCE = 20;
+
+    public Sprite[] troop_sprites;
+    public Sprite[] cannon_sprites;
+    public Sprite[] bases_sprites;
+    public Sprite[] ability_sprites;
+    public Sprite[] bases_towers_sprites;
+
+    private void Awake()
+    {
+        
+    }
 
     public class TroopData : Only_Data
     {
@@ -55,6 +69,9 @@ public class Data : MonoBehaviour
 
         public int range_ranged = 0;
         public int range_melee = 20;
+
+        public float speed = 100f; // the game has a standard move speed for all troops
+        public int length = 20;
 
         public float melee_first_speed = 0.45f;
         public float melee_speed = 1f;
@@ -77,6 +94,7 @@ public class Data : MonoBehaviour
 
             range_ranged = troop_ranged_ranges[id];
             range_melee = troop_melee_ranges[id];
+            length = troop_lengths[id];
 
             melee_first_speed = troop_melee_first_speeds[id];
             melee_speed = troop_melee_speeds[id];
@@ -110,8 +128,5 @@ public class Data : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        
-    }
+
 }

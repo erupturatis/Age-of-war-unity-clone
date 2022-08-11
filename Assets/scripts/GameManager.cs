@@ -36,8 +36,12 @@ public class GameManager : MonoBehaviour
 
     GameObject Last_friendly_spawned = null;
     GameObject Last_enemy_spawned = null;
-    public Queue<GameObject> player_troops_queue;
-    public Queue<GameObject> enemy_troops_queue;
+    public Queue<GameObject> player_troops_queue = new Queue<GameObject>();
+    public Queue<GameObject> enemy_troops_queue = new Queue<GameObject>();
+
+    public GameObject player_base;
+    public GameObject enemy_base;
+    public Data data_object;
 
     [SerializeField]
     GameObject troop;
@@ -62,33 +66,74 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void spawn_player_troop(int tier)
+    public void spawn_player_troop(int tier, int age = 0)
     {
+        if(age == 0)
+        {
+            age = player_age;
+        }
         //tier is 0 1 or 2 (and 3 in the fifth age scenario)
-        int id = (player_age - 1) * 3 + tier;
+        int id = (age - 1) * 3 + tier;
         Data.TroopData tr = new Data.TroopData();
         tr.id = id;
         tr.set_parameters();
-        Vector3 trans = new Vector3(0f,0f,0f);
+        Vector3 trans = new Vector3(-9f,-3f,0f);
         GameObject gm = Instantiate(troop, trans, Quaternion.identity);
+        gm.transform.parent = gameObject.transform;
+        gm.transform.localPosition = trans;
         Troop troop_script = gm.GetComponent<Troop>();
 
         troop_script.next_troop = Last_friendly_spawned;
-        troop_script.game_manager = gameObject.GetComponent<GameManager>() ;
+        troop_script.game_manager = gameObject.GetComponent<GameManager>();
+
         troop_script.troop_data = tr;
         troop_script.isPlayer = true;
-        Last_enemy_spawned = gm;
+        Last_friendly_spawned = gm;
         player_troops_queue.Enqueue(gm);
+        player_troops[tier] += 1;
           
     }
 
-    
-    
+    public void spawn_enemy_troop(int tier, int age = 0)
+    {
+        if(age == 0)
+        {
+            age = enemy_age;
+        }
+        //tier is 0 1 or 2 (and 3 in the fifth age scenario)
+        int id = (age - 1) * 3 + tier;
+        Data.TroopData tr = new Data.TroopData();
+        tr.id = id;
+        tr.set_parameters();
+        Vector3 trans = new Vector3(9f, -3f, 0f);
+        GameObject gm = Instantiate(troop, trans, Quaternion.identity);
+        Troop troop_script = gm.GetComponent<Troop>();
+
+        troop_script.next_troop = Last_enemy_spawned;
+        troop_script.game_manager = gameObject.GetComponent<GameManager>();
+        troop_script.troop_data = tr;
+        troop_script.isPlayer = false;
+        Last_enemy_spawned = gm;
+        enemy_troops_queue.Enqueue(gm);
+        enemy_troops[tier] += 1;
+
+    }
+
 
 
     void Start()
     {
-        spawn_player_troop(id);
+        spawn_player_troop(2,2);
+        spawn_player_troop(1);
+        spawn_player_troop(1,4);
+        spawn_player_troop(1, 4);
+        spawn_player_troop(1, 4);
+        spawn_enemy_troop(0);
+        spawn_enemy_troop(1,2);
+        spawn_enemy_troop(1,3);
+        spawn_enemy_troop(1,4);
+        spawn_enemy_troop(1, 4);
+        spawn_enemy_troop(1, 4);
     }
 
     // Update is called once per frame
