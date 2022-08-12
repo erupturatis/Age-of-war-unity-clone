@@ -36,12 +36,13 @@ public class GameManager : MonoBehaviour
 
     GameObject Last_friendly_spawned = null;
     GameObject Last_enemy_spawned = null;
-    public Queue<GameObject> player_troops_queue = new Queue<GameObject>();
-    public Queue<GameObject> enemy_troops_queue = new Queue<GameObject>();
+    public List<GameObject> player_troops_queue = new List<GameObject>();
+    public List<GameObject> enemy_troops_queue = new List<GameObject>();
 
     public GameObject player_base;
     public GameObject enemy_base;
     public Data data_object;
+    private Data.Only_Data od;
 
     [SerializeField]
     GameObject troop;
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
         troop_script.troop_data = tr;
         troop_script.isPlayer = true;
         Last_friendly_spawned = gm;
-        player_troops_queue.Enqueue(gm);
+        player_troops_queue.Add(gm);
         player_troops[tier] += 1;
           
     }
@@ -114,31 +115,121 @@ public class GameManager : MonoBehaviour
         troop_script.troop_data = tr;
         troop_script.isPlayer = false;
         Last_enemy_spawned = gm;
-        enemy_troops_queue.Enqueue(gm);
+        enemy_troops_queue.Add(gm);
         enemy_troops[tier] += 1;
+
+    }
+    public void upgrade_age_enemy()
+    {
+        enemy_age += 1; 
+    }
+
+    public void buy_turret_enemy()
+    {
 
     }
 
 
+    public void upgrade_age_player()
+    {
+        player_age += 1; // calling functions here?
+    }
+    public bool check_upgrade_age_player()
+    {
+        return true;
+    }
+    
+    public void buy_slot_player()
+    {
+
+    }
+    public bool check_buy_slot_player()
+    {
+        if(total_slots < 4)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void buy_turret_player(int tier, int age = 0)
+    {
+
+    }
+
+    public bool check_buy_turret_player(int tier)
+    {
+        if (available_slots > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void sell_turret_player(int spot)
+    {
+
+    }
+
+    public bool check_sell_turret_player(int spot)
+    {
+        if (slots[spot] != 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void use_ability()
+    {
+        //code
+    }
+
+    public bool check_use_ability()
+    {
+        if (ability_time <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    public bool check_spawn_player_troop(int tier)
+    {
+        if(money <= od.troop_costs[(player_age-1)*3 + tier])
+        {
+            money -= od.troop_costs[(player_age - 1) * 3 + tier];
+            return true;
+        }
+        return false;
+    }
+    
+
+
+    private void Awake()
+    {
+        od = new Data.Only_Data();
+    }
 
     void Start()
     {
-        spawn_player_troop(2,2);
-        spawn_player_troop(1);
-        spawn_player_troop(1,4);
-        spawn_player_troop(1, 4);
-        spawn_player_troop(1, 4);
-        spawn_enemy_troop(0);
-        spawn_enemy_troop(1,2);
-        spawn_enemy_troop(1,3);
-        spawn_enemy_troop(1,4);
-        spawn_enemy_troop(1, 4);
-        spawn_enemy_troop(1, 4);
+        
+
+        spawn_player_troop(1, 1);
+
+        spawn_enemy_troop(0, 1);
+        spawn_enemy_troop(0, 1);
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (ability_time >= 0)
+        {
+            ability_time -= Time.deltaTime;
+        }
     }
 }

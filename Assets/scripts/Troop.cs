@@ -15,16 +15,19 @@ public class Troop : MonoBehaviour
     [HideInInspector] public GameObject attacked_gm;
 
     bool is_moving;
-    bool attacking_range;
-    bool attacking_melee;
-    bool melee_routine;
-    bool range_routine;
+    bool attacking_range = false;
+    bool attacking_melee = false;
+    bool melee_routine = false;
+    bool range_routine = false;
 
     [SerializeField]
     TextMeshProUGUI hp, attacking, moving, additonal;
     [SerializeField]
     GameObject local_canvas;
     SpriteRenderer spriteR;
+
+    Coroutine inst_melee;
+    Coroutine inst_range;
 
     [System.NonSerialized]
     public bool info = true;
@@ -61,7 +64,7 @@ public class Troop : MonoBehaviour
                 }
                 if (game_manager.enemy_troops_queue.Count > 0)
                 {
-                    GameObject first_enemy = game_manager.enemy_troops_queue.Peek();
+                    GameObject first_enemy = game_manager.enemy_troops_queue[0];
                     additonal.text = "" + (first_enemy.transform.position.x - gameObject.transform.position.x) * data.COEFF + "   " + (first_enemy.transform.position.x - gameObject.transform.position.x);
 
                     if ((first_enemy.transform.position.x - gameObject.transform.position.x) * data.COEFF <= data.MIN_DISTANCE)
@@ -91,7 +94,7 @@ public class Troop : MonoBehaviour
                 }
                 if (game_manager.player_troops_queue.Count > 0)
                 {
-                    GameObject first_enemy = game_manager.player_troops_queue.Peek();
+                    GameObject first_enemy = game_manager.player_troops_queue[0];
                     if ((gameObject.transform.position.x - first_enemy.transform.position.x) * data.COEFF <= data.MIN_DISTANCE)
                     {
                         is_moving = false;
@@ -111,12 +114,14 @@ public class Troop : MonoBehaviour
 
     void check_attacking()
     {
+        attacking_melee = false;
+        attacking_range = false;
         if (isPlayer)
         {
             if (game_manager.enemy_troops_queue.Count > 0)
             {
                 // if there are enemies
-                GameObject first_enemy = game_manager.enemy_troops_queue.Peek();
+                GameObject first_enemy = game_manager.enemy_troops_queue[0];
                 
                 if ((first_enemy.transform.position.x - gameObject.transform.position.x) * data.COEFF - data.MIN_DISTANCE <= troop_data.range_ranged)
                 {
@@ -145,10 +150,10 @@ public class Troop : MonoBehaviour
         }
         else
         {
-            if (game_manager.enemy_troops_queue.Count > 0)
+            if (game_manager.player_troops_queue.Count > 0)
             {
                 // if there are enemies
-                GameObject first_enemy = game_manager.player_troops_queue.Peek();
+                GameObject first_enemy = game_manager.player_troops_queue[0];
 
                 if ((gameObject.transform.position.x - first_enemy.transform.position.x ) * data.COEFF - data.MIN_DISTANCE <= troop_data.range_ranged)
                 {
@@ -189,6 +194,133 @@ public class Troop : MonoBehaviour
             gameObject.transform.position += new Vector3(speed, 0f, 0f) * Time.deltaTime;
         }
     }
+
+    void try_attacking()
+    {
+        if (attacking_melee)
+        {
+            if (!melee_routine)
+            {
+                //an attacking routine is not already running 
+                inst_melee = StartCoroutine(attack_melee(troop_data.melee_first_speed));
+            }
+        }
+        else
+        {
+            if (attacking_range)
+            {
+                if (!range_routine)
+                {
+                    inst_range = StartCoroutine(attack_range(troop_data.ranged_first_speed));
+                }
+            }
+           
+        }
+    }
+
+
+    void try_dying()
+    {
+        if (troop_data.health <= 0)
+        {
+
+            //print("troop died");
+            if (isPlayer)
+            {
+                game_manager.player_troops[troop_data.id%3] -= 1;
+                game_manager.player_troops_queue.Remove(gameObject);
+                //print("new count player" + game_manager.player_troops_queue.Count);
+            }
+            else
+            {
+                game_manager.enemy_troops[troop_data.id % 3] -= 1;
+                game_manager.enemy_troops_queue.Remove(gameObject);
+                //print("new count enemies" + game_manager.enemy_troops_queue.Count);
+            }
+            Destroy(gameObject);
+            
+        }
+    }
+
+    void give_damage(int damage)
+    {
+        if (attacking_range || attacking_melee)
+        {
+            if (isPlayer)
+            {
+                //gives damage to first enemy or enemy base
+                if (game_manager.enemy_troops_queue.Count > 0)
+                {
+                    //there is a troop alive
+                    Troop enemy_script = game_manager.enemy_troops_queue[0].GetComponent<Troop>();
+                    enemy_script.troop_data.health -= damage;
+                }
+                else
+                {
+                    //damages enemy base
+                    Base b = game_manager.enemy_base.GetComponent<Base>();
+                    b.take_damage(damage);
+                }
+            }
+            else
+            {
+                //same as above but for the enemy
+                if (game_manager.player_troops_queue.Count > 0)
+                {
+                    //there is a troop alive
+                    Troop enemy_script = game_manager.player_troops_queue[0].GetComponent<Troop>();
+                    enemy_script.troop_data.health -= damage;
+                }
+                else
+                {
+                    //damages enemy base
+                    Base b = game_manager.player_base.GetComponent<Base>();
+                    b.take_damage(damage);
+                }
+            }
+        }
+    }
+
+    IEnumerator attack_melee(float cooldown)
+    {
+        melee_routine = true;
+        yield return new WaitForSeconds(cooldown);
+        give_damage(troop_data.melee_damage);
+        if (attacking_melee)
+        {
+            StartCoroutine(attack_melee(troop_data.melee_speed));
+        }
+        else
+        {
+            melee_routine = false;
+        }
+    }
+
+    IEnumerator attack_range(float cooldown)
+    {
+        range_routine = true;
+        yield return new WaitForSeconds(cooldown);
+        if (!attacking_melee)
+        {
+            give_damage(troop_data.ranged_damage);
+        }
+        if (attacking_range)
+        {
+            if (!is_moving)
+            {
+                StartCoroutine(attack_range(troop_data.ranged_standing_speed));
+            }
+            else
+            {
+                StartCoroutine(attack_range(troop_data.ranged_walking_speed));
+            }
+        }
+        else
+        {
+            range_routine = false;
+        }
+    }
+
     void Start()
     {
         data = game_manager.data_object;
@@ -219,5 +351,7 @@ public class Troop : MonoBehaviour
         check_moving();
         check_attacking();
         try_moving();
+        try_attacking();
+        try_dying();
     }
 }

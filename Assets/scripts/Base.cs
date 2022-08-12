@@ -35,7 +35,7 @@ public class Base : MonoBehaviour
         Renderer.sprite = Sprites[age - 1];
     }
 
-    void take_damage(int damage)
+    public void take_damage(int damage)
     {
         if (IsPlayerBase)
         {

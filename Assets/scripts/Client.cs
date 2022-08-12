@@ -44,6 +44,9 @@ public class Client : MonoBehaviour
             print("Received action for" + Encoding.Default.GetString(buffer));
         }
 
+        // taking actions
+        // returning positive or negative response
+
     }
  
     void Start()
