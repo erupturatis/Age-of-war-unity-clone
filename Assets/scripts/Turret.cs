@@ -18,7 +18,7 @@ public class Turret : MonoBehaviour
     [SerializeField] TextMeshProUGUI attacking;
     [SerializeField] GameObject local_canvas;
 
-    SpriteRenderer spriteR;
+    [SerializeField] SpriteRenderer spriteR;
 
     [System.NonSerialized]
     public bool info = true;
@@ -34,6 +34,7 @@ public class Turret : MonoBehaviour
             if (game_manager.enemy_troops_queue.Count > 0)
             {
                 // if there are enemies
+ 
                 GameObject first_enemy = game_manager.enemy_troops_queue[0];
 
                 if (Vector2.Distance(first_enemy.transform.position , gameObject.transform.position) * data.COEFF <= turret_data.range)
@@ -104,6 +105,7 @@ public class Turret : MonoBehaviour
         {
             first_enemy = game_manager.player_troops_queue[0];
         }
+        // getting direction for bullets
         Vector2 dir = (first_enemy.transform.position - gameObject.transform.position);
         dir = dir.normalized;
         GameObject bulletgm = Instantiate(bullet, transform.position, transform.rotation);
@@ -120,17 +122,22 @@ public class Turret : MonoBehaviour
         if (attacking_range)
         {
             spawn_bullet();
-            StartCoroutine(attack_range(turret_data.speed + turret_data.additional_speed/data.FPS));
+            StartCoroutine(attack_range(turret_data.speed));
         }
         else
         {
             range_routine = false;
         }
     }
+
+    void manage_texts()
+    {
+        attacking.text = "" + attacking_range;
+    }
     void manage_sprites()
     {
         int id = turret_data.id;
-        spriteR = gameObject.GetComponent<SpriteRenderer>();
+        //spriteR = gameObject.GetComponent<SpriteRenderer>();
         spriteR.sprite = data.turret_sprites[id];
     }
 
@@ -151,8 +158,9 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotate_turret();
+        manage_texts();
         check_attacking();
+        rotate_turret();
         try_attacking();
         
     }

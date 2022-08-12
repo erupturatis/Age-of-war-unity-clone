@@ -36,6 +36,8 @@ public class Troop : MonoBehaviour
 
     void manage_texts()
     {
+      
+        
         int health = troop_data.health;
         hp.text = "" + health;
         moving.text = "" + is_moving;
@@ -241,6 +243,8 @@ public class Troop : MonoBehaviour
             
         }
     }
+
+
 
     void give_damage(int damage)
     {

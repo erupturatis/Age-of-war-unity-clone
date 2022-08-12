@@ -6,17 +6,20 @@ public class Bullet : MonoBehaviour
 {
 
     public Data.TurretData TD;
+    [HideInInspector]
     public Vector2 direction;
     Data data;
     private void Start()
     {
+        StartCoroutine(AutoDestroy());
         data = new Data();
     }
     private void Update()
     {
         
         Vector3 ndir = new Vector3(direction.x, direction.y, 0f);
-        gameObject.transform.position += ndir * TD.bullet_speed / data.COEFF;
+       
+        gameObject.transform.position += ndir * TD.bullet_speed / data.COEFF * Time.deltaTime;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -27,6 +30,12 @@ public class Bullet : MonoBehaviour
         {
             // additional instatiating
         }
+        Destroy(gameObject);
+    }
+
+    IEnumerator AutoDestroy()
+    {
+        yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
 }

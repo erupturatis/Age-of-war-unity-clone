@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
     public Data data_object;
     private Data.Only_Data od;
 
-    [SerializeField]
-    GameObject troop;
+
+    [SerializeField] GameObject troop;
+    [SerializeField] GameObject turret;
 
     [SerializeField]
     int id;
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
 
         troop_script.troop_data = tr;
+        
         troop_script.isPlayer = true;
         Last_friendly_spawned = gm;
         player_troops_queue.Add(gm);
@@ -104,15 +106,17 @@ public class GameManager : MonoBehaviour
         //tier is 0 1 or 2 (and 3 in the fifth age scenario)
         int id = (age - 1) * 3 + tier;
         Data.TroopData tr = new Data.TroopData();
+        
         tr.id = id;
         tr.set_parameters();
         Vector3 trans = new Vector3(9f, -3f, 0f);
         GameObject gm = Instantiate(troop, trans, Quaternion.identity);
         Troop troop_script = gm.GetComponent<Troop>();
-
+        
         troop_script.next_troop = Last_enemy_spawned;
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
         troop_script.troop_data = tr;
+        
         troop_script.isPlayer = false;
         Last_enemy_spawned = gm;
         enemy_troops_queue.Add(gm);
@@ -152,9 +156,28 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void buy_turret_player(int tier, int age = 0)
+    public void buy_turret_player(int tier, int spot, int age = 0)
     {
+        if (age == 0)
+        {
+            age = enemy_age;
+        }
+        //tier is 0 1 or 2 (and 3 in the fifth age scenario)
+        int id = (age - 1) * 3 + tier;
+        Data.TurretData tr = new Data.TurretData();
+        tr.id = id;
+        tr.set_parameters();
 
+        Vector3 Vbase = player_base.transform.position;
+        Vector3 trans = new Vector3(1f, new Data.Only_Data().turret_spot[spot]/data_object.COEFF, 0f);
+
+        GameObject gm = Instantiate(turret, trans + Vbase, Quaternion.identity);
+        Turret turret_script = gm.GetComponent<Turret>();
+
+
+        turret_script.game_manager = gameObject.GetComponent<GameManager>();
+        turret_script.turret_data = tr;
+        turret_script.isPlayer = true;
     }
 
     public bool check_buy_turret_player(int tier)
@@ -214,13 +237,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        buy_turret_player(1,0,1);
 
-        spawn_player_troop(1, 1);
-
-        spawn_enemy_troop(0, 1);
-        spawn_enemy_troop(0, 1);
-
+        spawn_enemy_troop(0);
+        spawn_enemy_troop(0);
+        spawn_enemy_troop(0);
 
     }
 
