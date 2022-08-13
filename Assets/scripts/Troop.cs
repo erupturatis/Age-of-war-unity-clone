@@ -69,7 +69,7 @@ public class Troop : MonoBehaviour
         {
             if (next_troop == null)
             {
-                if (gameObject.transform.position.x >= 9f)
+                if (gameObject.transform.localPosition.x >= 9f)
                 {
                     is_moving = false;
                 }
@@ -99,7 +99,7 @@ public class Troop : MonoBehaviour
         {
             if (next_troop == null)
             {
-                if (gameObject.transform.position.x <= -9f)
+                if (gameObject.transform.localPosition.x <= -9f)
                 {
                     is_moving = false;
                 }
@@ -149,11 +149,11 @@ public class Troop : MonoBehaviour
             else
             {
                 //checking base attacking
-                if ((9f - gameObject.transform.position.x) * data.COEFF <= troop_data.range_ranged)
+                if ((9f - gameObject.transform.localPosition.x) * data.COEFF <= troop_data.range_ranged)
                 {
                     attacking_range = true;
                 }
-                if ((9f - gameObject.transform.position.x) * data.COEFF <= troop_data.range_melee)
+                if ((9f - gameObject.transform.localPosition.x) * data.COEFF <= troop_data.range_melee)
                 {
                     attacking_melee = true;
                 }
@@ -181,11 +181,11 @@ public class Troop : MonoBehaviour
             else
             {
                 //checking base attacking
-                if ((gameObject.transform.position.x + 9f) * data.COEFF <= troop_data.range_ranged)
+                if ((gameObject.transform.localPosition.x + 9f) * data.COEFF <= troop_data.range_ranged)
                 {
                     attacking_range = true;
                 }
-                if ((gameObject.transform.position.x + 9f) * data.COEFF <= troop_data.range_melee)
+                if ((gameObject.transform.localPosition.x + 9f) * data.COEFF <= troop_data.range_melee)
                 {
                     attacking_melee = true;
                 }
@@ -240,12 +240,19 @@ public class Troop : MonoBehaviour
             {
                 game_manager.player_troops[troop_data.id%3] -= 1;
                 game_manager.player_troops_queue.Remove(gameObject);
+                int reward = Mathf.RoundToInt(1.3f * troop_data.cost);
+                
+                game_manager.xp += reward / 2;
                 //print("new count player" + game_manager.player_troops_queue.Count);
             }
             else
             {
                 game_manager.enemy_troops[troop_data.id % 3] -= 1;
                 game_manager.enemy_troops_queue.Remove(gameObject);
+                int reward = Mathf.RoundToInt(1.3f * troop_data.cost);
+                game_manager.money += reward;
+                game_manager.xp += reward * 2;
+                
                 //print("new count enemies" + game_manager.enemy_troops_queue.Count);
             }
             Destroy(gameObject);

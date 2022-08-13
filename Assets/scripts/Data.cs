@@ -31,7 +31,9 @@ public class Data : MonoBehaviour
         //turret attack speed 
         public string[] turret_name = { "Rock slingshot", "egg automatic", "primitive catapult", "Catapult", "Fire Catapult", "oil", "Small Cannon", "Medium Cannon", "Big cannon", "gun", "rocket launcher", "double gun", "laser", "red pew pew", "blue pew pew" };
         public int[] turret_cost = { 100, 200, 500, 500, 750, 1000, 1500, 3000, 6000, 7000, 9000, 14000, 24000, 40000, 100000 };
-        public int[] turret_spot = { 20, 125, 172, 220 };
+        public int[] turret_spot = { 20, 68, 116, 164 };
+        public int[] xp_cost = { 4000, 14000, 45000, 200000 };
+        public int[] slot_cost = { 1000, 3000, 7500 };
         
 
         protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.07f, 0.07f };
