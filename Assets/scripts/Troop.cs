@@ -24,7 +24,9 @@ public class Troop : MonoBehaviour
     TextMeshProUGUI hp, attacking, moving, additonal;
     [SerializeField]
     GameObject local_canvas;
-    SpriteRenderer spriteR;
+    [SerializeField] SpriteRenderer spriteR;
+    [SerializeField] BoxCollider2D Box;
+
 
     Coroutine inst_melee;
     Coroutine inst_range;
@@ -36,7 +38,14 @@ public class Troop : MonoBehaviour
 
     void manage_texts()
     {
-      
+        if (troop_data.id == 2 || troop_data.id == 5 )
+        {
+            Box.size = new Vector2(0.7f, 0.25f);
+        }
+        if(troop_data.id == 11 || troop_data.id == 14)
+        {
+            Box.size = new Vector2(1.05f, 0.25f);
+        }
         
         int health = troop_data.health;
         hp.text = "" + health;
@@ -48,7 +57,7 @@ public class Troop : MonoBehaviour
     void manage_sprites()
     {
         int id = troop_data.id;
-        spriteR = gameObject.GetComponent<SpriteRenderer>();
+        
         spriteR.sprite = data.troop_sprites[id]; 
     }
 

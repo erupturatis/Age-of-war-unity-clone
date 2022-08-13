@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour
 {
 
     public Data.TurretData TD;
+    public int damage;
+    public bool isPlayer;
     [HideInInspector]
     public Vector2 direction;
     Data data;
@@ -19,23 +21,50 @@ public class Bullet : MonoBehaviour
         
         Vector3 ndir = new Vector3(direction.x, direction.y, 0f);
        
-        gameObject.transform.position += ndir * TD.bullet_speed / data.COEFF * Time.deltaTime;
+        gameObject.transform.position += ndir * 250f / data.COEFF * Time.deltaTime;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject gm = collision.gameObject;
         Troop tr = gm.GetComponent<Troop>();
-        tr.troop_data.health -= TD.damage;
-        if (TD.makes_fragments)
+
+        if (!tr.isPlayer && isPlayer)
         {
-            // additional instatiating
+            if (TD != null)
+            {
+                tr.troop_data.health -= TD.damage;
+                if (TD.makes_fragments)
+                {
+                    // additional instatiating
+                }
+            }
+            else
+            {
+                tr.troop_data.health -= damage;
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        if(tr.isPlayer && !isPlayer)
+        {
+            if (TD != null)
+            {
+                tr.troop_data.health -= TD.damage;
+                if (TD.makes_fragments)
+                {
+                    // additional instatiating
+                }
+            }
+            else
+            {
+                tr.troop_data.health -= damage;
+            }
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator AutoDestroy()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3.5f);
         Destroy(gameObject);
     }
 }

@@ -20,7 +20,7 @@ public class Data : MonoBehaviour
 
         // the speed of the initial attack is different from the others
         protected float[] troop_melee_first_speeds = { 0.43f, 0.43f, 0.32f, 0.62f, 0.62f, 0.35f, 0.32f, 0.15f, 0.65f, 0.17f, 0.07f, 0.55f, 0.32f, 0.32f, 0.25f, 0.32f };
-        protected float[] troop_melee_speeds = { 1f, 1f, 1.12f, 2.47f, 2.47f, 1.30f, 1.05f, 1.15f, 1.95f, 0.75f, 0.52f, 1.57f, 0.92f, 0.7f, 2.25f, 0.7f };
+        protected float[] troop_melee_speeds = { 1f, 1f, 1.12f, 2.47f/2, 2.47f/2, 1.30f, 1.05f, 1.15f, 1.95f, 0.75f, 0.52f, 1.57f, 0.92f, 0.7f, 2.25f, 0.7f };
 
         // ranged troops have different speeds when walking or stationating
         protected float[] troop_ranged_speeds = { 0f, 0.8f, 0f, 0f, 1f, 0f, 0f, 1.15f, 0f, 0f, 0.52f, 0f, 0f, 0.35f, 0f, 0.35f };
@@ -35,12 +35,12 @@ public class Data : MonoBehaviour
         
 
         protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.07f, 0.07f };
-        protected int[] turret_speed_add = { 30, 5, 70, 70, 70, 100, 70, 70, 70, 40, 50, 22, 40, 10, 10 };
+        protected int[] turret_speed_add = { 30, 11, 20, 70, 70, 50, 50, 70, 70, 70, 80, 0, 40, 10, 10 }; // I didn t totally figure out how these values work so I adjusted some of them to match in game time
         protected int[] turret_damage = { 12, 5, 25, 40, 50, 100, 30, 70, 100, 70, 100, 60, 100, 40, 60 };
         protected int[] turret_range = { 350, 300, 400, 400, 300, 50, 500, 500, 500, 500, 500, 500, 400, 500, 550 };
         protected int[] turret_fragment_damage = { 0, 0, 0, 0, 10, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0 };
         protected bool[] turret_makes_fragment = { false, false, false, false, true, false, false, false, true, false, false, false, false, false, false };
-        protected float[] turret_initial_speed = { 0.02f, 0f, 0.17f, 0.35f, 0.35f, 0.5f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
+        protected float[] turret_initial_speed = { 0.1f, 0f, 0.17f, 0.35f, 0.35f, 0.5f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
     }
 

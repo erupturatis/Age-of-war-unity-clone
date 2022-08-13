@@ -41,12 +41,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject player_base;
     public GameObject enemy_base;
+    public GameObject spawn_ability;
     public Data data_object;
     private Data.Only_Data od;
 
 
     [SerializeField] GameObject troop;
     [SerializeField] GameObject turret;
+    [SerializeField] GameObject bullet;
 
     [SerializeField]
     int id;
@@ -206,6 +208,10 @@ public class GameManager : MonoBehaviour
     public void use_ability()
     {
         //code
+        if(player_age == 1)
+        {
+            
+        }
     }
 
     public bool check_use_ability()
@@ -227,9 +233,19 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-    
 
 
+    void spawn_bullet(Vector2 dir, Vector2 spawn, int damage = 200)
+    {
+        // getting direction for bullets
+        dir = dir.normalized;
+        GameObject bulletgm = Instantiate(bullet, spawn, transform.rotation);
+        Bullet b = bulletgm.GetComponent<Bullet>();
+        b.direction = dir;
+        b.damage = damage;
+        b.isPlayer = true;
+
+    }
     private void Awake()
     {
         od = new Data.Only_Data();
@@ -237,12 +253,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        buy_turret_player(1,0,1);
+        buy_turret_player(1,0,4);
+        StartCoroutine(ability5(0));
+
+        spawn_player_troop(2);
 
         spawn_enemy_troop(0);
+        spawn_enemy_troop(2);
+        spawn_enemy_troop(2,4);
+        spawn_enemy_troop(2,5);
         spawn_enemy_troop(0);
-        spawn_enemy_troop(0);
-
     }
 
     // Update is called once per frame
@@ -251,6 +271,59 @@ public class GameManager : MonoBehaviour
         if (ability_time >= 0)
         {
             ability_time -= Time.deltaTime;
+        }
+    }
+
+    IEnumerator ability1(int bullets_launched)
+    {
+        if(bullets_launched != 22)
+        {
+           
+            yield return new WaitForSeconds((9 / data_object.FPS));
+            Vector2 dir = new Vector2(0, -1f);
+            Vector2 noise = new Vector2(Random.Range(-0.2f, 0.2f), 0f);
+            dir += noise;
+            Vector2 spawn = new Vector2(Random.Range(-8f, 8f), spawn_ability.transform.position.y);
+            spawn_bullet(dir, spawn);
+            StartCoroutine(ability1(bullets_launched + 1));
+        }
+    }
+    IEnumerator ability2(int bullets_launched)
+    {
+        if (bullets_launched != 40)
+        {
+
+            yield return new WaitForSeconds((5 / data_object.FPS));
+            Vector2 dir = new Vector2(0, -1f);
+            Vector2 noise = new Vector2(Random.Range(-0.1f, 0.1f), 0f);
+            dir += noise;
+            Vector2 spawn = new Vector2(Random.Range(-8f, 8f), spawn_ability.transform.position.y);
+            spawn_bullet(dir, spawn);
+            StartCoroutine(ability2(bullets_launched + 1));
+        }
+    }
+    IEnumerator ability4(int bullets_launched)
+    {
+        if (bullets_launched != 15)
+        {
+
+            yield return new WaitForSeconds((15 / data_object.FPS));
+            Vector2 dir = new Vector2(0, -1f);
+            Vector2 spawn = new Vector2(-9f + bullets_launched * 60f / data_object.COEFF, spawn_ability.transform.position.y);
+            spawn_bullet(dir, spawn, 400);
+            StartCoroutine(ability4(bullets_launched + 1));
+        }
+    }
+    IEnumerator ability5(int bullets_launched)
+    {
+        if (bullets_launched != 18)
+        {
+
+            yield return new WaitForSeconds((5 / data_object.FPS));
+            Vector2 dir = new Vector2(0, -1f);
+            Vector2 spawn = new Vector2(-9f + bullets_launched * 50f / data_object.COEFF, spawn_ability.transform.position.y);
+            spawn_bullet(dir, spawn, 1000);
+            StartCoroutine(ability5(bullets_launched + 1));
         }
     }
 }

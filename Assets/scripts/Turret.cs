@@ -112,6 +112,7 @@ public class Turret : MonoBehaviour
         Bullet b = bulletgm.GetComponent<Bullet>();
         b.direction = dir;
         b.TD = turret_data;
+        b.isPlayer = isPlayer;
         
     }
 
@@ -122,7 +123,8 @@ public class Turret : MonoBehaviour
         if (attacking_range)
         {
             spawn_bullet();
-            StartCoroutine(attack_range(turret_data.speed));
+            StartCoroutine(attack_range(turret_data.speed + turret_data.additional_speed / (data.FPS*2)));
+            //StartCoroutine(attack_range(turret_data.additional_speed/data.FPS));
         }
         else
         {
