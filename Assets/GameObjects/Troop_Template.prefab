@@ -423,7 +423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &402691664435617515
 RectTransform:
   m_ObjectHideFlags: 0
@@ -560,6 +560,8 @@ MonoBehaviour:
   game_manager: {fileID: 0}
   next_troop: {fileID: 0}
   attacked_gm: {fileID: 0}
+  is_regenerating: 0
+  max_health: 0
   hp: {fileID: 402691663155386873}
   attacking: {fileID: 402691664151471301}
   moving: {fileID: 402691663972235327}

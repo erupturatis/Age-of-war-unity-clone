@@ -10,7 +10,7 @@ public class Turret : MonoBehaviour
     [HideInInspector] public GameManager game_manager;
     [HideInInspector] public Data.TurretData turret_data; // has all the data for the current turret
     [HideInInspector] public GameObject attacked_gm;
-
+    [HideInInspector] public int slot;
 
     bool attacking_range;
     bool range_routine;
@@ -59,6 +59,39 @@ public class Turret : MonoBehaviour
 
             }
         }
+        if(turret_data.id == 5)
+        {
+            if (isPlayer)
+            {
+                if (game_manager.enemy_troops_queue.Count > 0)
+                {
+                    // if there are enemies
+
+                    GameObject first_enemy = game_manager.enemy_troops_queue[0];
+
+                    if ((first_enemy.transform.position.x - gameObject.transform.position.x) * data.COEFF <= turret_data.range)
+                    {
+                        attacking_range = true;
+                        attacked_gm = first_enemy;
+                    }
+                }
+            }
+            else
+            {
+                if (game_manager.player_troops_queue.Count > 0)
+                {
+                    // if there are enemies
+                    GameObject first_enemy = game_manager.player_troops_queue[0];
+
+                    if ((gameObject.transform.position.x - first_enemy.transform.position.x) * data.COEFF <= turret_data.range)
+                    {
+                        attacking_range = true;
+                        attacked_gm = first_enemy;
+                    }
+
+                }
+            }
+        }
     }
 
     void try_attacking()
@@ -99,19 +132,53 @@ public class Turret : MonoBehaviour
         GameObject first_enemy;
         if (isPlayer)
         {
-            first_enemy = game_manager.enemy_troops_queue[0];
+            if (game_manager.enemy_troops_queue.Count > 0)
+            {
+                first_enemy = game_manager.enemy_troops_queue[0];
+            }
+            else
+            {
+                return;
+            }
         }
         else
         {
-            first_enemy = game_manager.player_troops_queue[0];
+            if (game_manager.player_troops_queue.Count > 0)
+            {
+                first_enemy = game_manager.player_troops_queue[0];
+            }
+            else
+            {
+                return;
+            }
         }
         // getting direction for bullets
+        
         Vector2 dir = (first_enemy.transform.position - gameObject.transform.position);
+        if ((turret_data.id == 2 || turret_data.id == 3 || turret_data.id == 4) && slot == 0)
+        {
+            // the catapult type of turrets have a bug that doesn t allow them to shot enemies near base
+            if (isPlayer)
+            {
+                if(dir.x * data.COEFF <= 50)
+                {
+                    dir.x = 50 / data.COEFF;
+                }
+            }
+            else
+            {
+                if (dir.x * data.COEFF >= -50)
+                {
+                    dir.x = -50 / data.COEFF;
+                }
+            }
+        }
         dir = dir.normalized;
         GameObject bulletgm = Instantiate(bullet, transform.position, transform.rotation);
         Bullet b = bulletgm.GetComponent<Bullet>();
         b.direction = dir;
         b.TD = turret_data;
+        b.data = data;
         b.isPlayer = isPlayer;
         
     }
@@ -160,9 +227,12 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        manage_texts();
+        if (info)
+        {
+            manage_texts();
+        }
         check_attacking();
-        rotate_turret();
+        //rotate_turret();
         try_attacking();
         
     }

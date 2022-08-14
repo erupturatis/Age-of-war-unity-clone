@@ -21,7 +21,7 @@ public class Base : MonoBehaviour
 
     
 
-    void sprite_manager()
+    public void sprite_manager()
     {
         int age = 0;
         if (IsPlayerBase)
@@ -72,7 +72,7 @@ public class Base : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        sprite_manager(); // can be called less often
+        //sprite_manager(); // can be called less often
         update_text(); // can be optimized
     }
 }

@@ -13,12 +13,15 @@ public class Troop : MonoBehaviour
     [HideInInspector] public Data.TroopData troop_data; // has all the data for the troops
     [HideInInspector] public GameObject next_troop; 
     [HideInInspector] public GameObject attacked_gm;
+    [HideInInspector] public bool is_regenerating = false;
+    [HideInInspector] public int max_health;
 
     bool is_moving;
     bool attacking_range = false;
     bool attacking_melee = false;
     bool melee_routine = false;
     bool range_routine = false;
+    
 
     [SerializeField]
     TextMeshProUGUI hp, attacking, moving, additonal;
@@ -46,12 +49,14 @@ public class Troop : MonoBehaviour
         {
             Box.size = new Vector2(1.05f, 0.25f);
         }
-        
-        int health = troop_data.health;
-        hp.text = "" + health;
-        moving.text = "" + is_moving;
-        attacking.text = "" + attacking_melee + "\n" + attacking_range;
-        
+        if (info)
+        {
+
+            int health = troop_data.health;
+            hp.text = "" + health;
+            moving.text = "" + is_moving;
+            attacking.text = "" + attacking_melee + "\n" + attacking_range;
+        }
     }
 
     void manage_sprites()
@@ -62,9 +67,11 @@ public class Troop : MonoBehaviour
     }
 
     
+    
     void check_moving()
     {
         is_moving = true;
+        //
         if (isPlayer)
         {
             if (next_troop == null)
@@ -344,7 +351,7 @@ public class Troop : MonoBehaviour
     void Start()
     {
         data = game_manager.data_object;
-
+        max_health = troop_data.health;
         if (!isPlayer && !info)
         {
             gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
@@ -359,6 +366,7 @@ public class Troop : MonoBehaviour
             local_canvas.SetActive(true);
         }
         manage_sprites();
+        StartCoroutine(Regenerate());
     }
     // Update is called once per frame
     void Update()
@@ -373,5 +381,15 @@ public class Troop : MonoBehaviour
         try_moving();
         try_attacking();
         try_dying();
+    }
+
+    IEnumerator Regenerate()
+    {
+        yield return new WaitForSeconds((1/data.FPS));
+        if(troop_data.health < max_health && is_regenerating)
+        {
+            troop_data.health += 1;
+        }
+        StartCoroutine(Regenerate());
     }
 }

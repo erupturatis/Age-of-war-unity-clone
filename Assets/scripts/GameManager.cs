@@ -41,6 +41,15 @@ public class GameManager : MonoBehaviour
     public List<GameObject> player_troops_queue = new List<GameObject>();
     public List<GameObject> enemy_troops_queue = new List<GameObject>();
 
+    public class troop_queue
+    {
+        public int tier;
+        public int age;
+        public int training;
+    }
+
+    public List<troop_queue> training_queue = new List<troop_queue>();
+
     public GameObject[] player_turrets = new GameObject[4];
     public GameObject[] enemy_turrets = new GameObject[4];
 
@@ -51,6 +60,7 @@ public class GameManager : MonoBehaviour
     public GameObject spawn_ability;
     public Data data_object;
     private Data.Only_Data od;
+    private Enemy_AI enemy_ai;
 
 
     [SerializeField] GameObject troop;
@@ -68,13 +78,37 @@ public class GameManager : MonoBehaviour
     {
 
     }
-    public void take_action()
+    public void take_action(int action)
     {
-
+        //actions i used in the api for the original game
+        //15 actions
+        /* ACTIONS_DICT = {
+             "troop_tier1":self.spawn_troop1, 
+             "troop_tier2":self.spawn_troop2, 
+             "troop_tier3":self.spawn_troop3, 
+             "troop_tier4":self.spawn_troop4,
+             "buy_turret_slot":self.add_turret_slot,
+             "turret_tier1":self.spawn_turret1,
+             "turret_tier2":self.spawn_turret2,
+             "turret_tier3":self.spawn_turret3,
+             "sell_turret1":self.sell_turret1,
+             "sell_turret2":self.sell_turret2,
+             "sell_turret3":self.sell_turret3,
+             "sell_turret4":self.sell_turret4,
+             "evolve":self.upgrade_age,
+             "wait":self.nothing,
+             "ability":self.use_ability,
+         }*/
+        switch (action)
+        {
+            case 0:
+                command_spawn_troop_tier_1();
+                break;
+        }
     }
     public void random_actions()
     {
-
+        
     }
 
     void update_text()
@@ -95,7 +129,7 @@ public class GameManager : MonoBehaviour
         Data.TroopData tr = new Data.TroopData();
         tr.id = id;
         tr.set_parameters();
-        money -= tr.cost;
+        
         Vector3 trans = new Vector3(-9f,-3f,0f);
         GameObject gm = Instantiate(troop, trans, Quaternion.identity);
         gm.transform.parent = gameObject.transform;
@@ -106,7 +140,7 @@ public class GameManager : MonoBehaviour
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
 
         troop_script.troop_data = tr;
-        
+        troop_script.info = false;
         troop_script.isPlayer = true;
         Last_friendly_spawned = gm;
         player_troops_queue.Add(gm);
@@ -134,12 +168,36 @@ public class GameManager : MonoBehaviour
         troop_script.next_troop = Last_enemy_spawned;
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
         troop_script.troop_data = tr;
-        
+        troop_script.info = false;
         troop_script.isPlayer = false;
         Last_enemy_spawned = gm;
         enemy_troops_queue.Add(gm);
         enemy_troops[tier] += 1;
 
+    }
+
+    public void dispatch_spawn_troop(int tier, bool player)
+    {
+        float training;
+        if (player)
+        {
+            training = od.troop_training_times[tier + (player_age - 1) * 3];
+            troop_queue tr = new troop_queue();
+            tr.age = player_age;
+            tr.tier = tier;
+            money -= od.troop_costs[(tr.age - 1) * 3 + tr.tier];
+            tr.training = od.troop_training_times[(player_age - 1) * 3 + tier];
+            training_queue.Add(tr);
+        }
+        else
+        {
+            training = od.troop_training_times[tier + (enemy_age - 1) * 3];
+        }
+        if (!player)
+        {
+            spawn_enemy_troop(tier);
+        }
+      
     }
     void set_timescale()
     {
@@ -147,14 +205,43 @@ public class GameManager : MonoBehaviour
     }
     public void upgrade_age_enemy()
     {
-        enemy_age += 1; 
+        Base b = enemy_base.GetComponent<Base>();
+        enemy_hp += od.base_hp[enemy_age] - od.base_hp[enemy_age - 1];
+        enemy_age += 1;
+        b.sprite_manager();
+        switch (enemy_age)
+        {
+            case 2:
+                enemy_ai.Protocol_age2();
+                break;
+
+            case 3:
+                enemy_ai.Protocol_age3();
+                break;
+
+            case 4:
+                enemy_ai.Protocol_age4();
+                break;
+
+            case 5:
+                enemy_ai.Protocol_age5();
+                break;
+        }
+        
     }
     public void upgrade_age_player()
     {
-        player_age += 1; // calling functions here?
+        Base b = player_base.GetComponent<Base>();
+        player_hp += od.base_hp[player_age] - od.base_hp[player_age - 1];
+        player_age += 1; 
+        b.sprite_manager();
     }
     public bool check_upgrade_age_player()
     {
+        if(player_age == 5)
+        {
+            return false;
+        }
         if(xp >= od.xp_cost[player_age - 1])
         {
             return true;
@@ -197,15 +284,17 @@ public class GameManager : MonoBehaviour
         tr.set_parameters();
 
         Vector3 Vbase = enemy_base.transform.position;
-        Vector3 trans = new Vector3(1f, new Data.Only_Data().turret_spot[spot] / data_object.COEFF, 0f);
+        Vector3 trans = new Vector3(-1f, new Data.Only_Data().turret_spot[spot] / data_object.COEFF, 0f);
 
         GameObject gm = Instantiate(turret, trans + Vbase, Quaternion.identity);
         Turret turret_script = gm.GetComponent<Turret>();
+        enemy_turrets[spot] = gm;
 
 
         turret_script.game_manager = gameObject.GetComponent<GameManager>();
         turret_script.turret_data = tr;
         turret_script.isPlayer = false;
+        turret_script.slot = spot;
     }
     public void buy_turret_player(int tier, int spot, int age = 0)
     {
@@ -235,6 +324,7 @@ public class GameManager : MonoBehaviour
         turret_script.game_manager = gameObject.GetComponent<GameManager>();
         turret_script.turret_data = tr;
         turret_script.isPlayer = true;
+        turret_script.slot = spot;
     }
     public void sell_turret_player(int spot)
     {
@@ -251,7 +341,7 @@ public class GameManager : MonoBehaviour
 
     public bool check_buy_turret_player(int tier)
     {
-        if (available_slots > 0)
+        if (available_slots > 0 && money >= od.turret_cost[tier + (player_age - 1) * 3]) 
         {
             return true;
         }
@@ -355,21 +445,29 @@ public class GameManager : MonoBehaviour
         }
             
     }
-
+    public void command_use_abiiliy()
+    {
+        bool can = check_use_ability();
+        if (can)
+        {
+            use_ability();
+        }
+    }
     public void command_spawn_troop_tier_1()
     {
         bool can = check_spawn_player_troop(0);
         if (can)
         {
-            spawn_player_troop(0);
+            dispatch_spawn_troop(0, true);
         }
+        //return can;
     }
     public void command_spawn_troop_tier_2()
     {
         bool can = check_spawn_player_troop(1);
         if (can)
         {
-            spawn_player_troop(1);
+            dispatch_spawn_troop(1, true);
         }
 
     }
@@ -378,7 +476,7 @@ public class GameManager : MonoBehaviour
         bool can = check_spawn_player_troop(2);
         if (can)
         {
-            spawn_player_troop(2);
+            dispatch_spawn_troop(2, true);
         }
     }
 
@@ -493,10 +591,23 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        enemy_ai = GetComponent<Enemy_AI>();
 
-        spawn_enemy_troop(0);
-        spawn_enemy_troop(2);
-      
+        /*  upgrade_age_player();
+          upgrade_age_player();
+          upgrade_age_player();
+          upgrade_age_player();
+
+          buy_slot_player();
+          buy_slot_player();
+          buy_slot_player();
+
+          buy_turret_player(2, 0);
+          buy_turret_player(2, 1);
+          buy_turret_player(2, 2);
+          buy_turret_player(2, 3);*/
+        set_timescale();
+        StartCoroutine(training());
     }
 
     // Update is called once per frame
@@ -506,8 +617,23 @@ public class GameManager : MonoBehaviour
         {
             ability_time -= Time.deltaTime;
         }
-        update_text();
-        set_timescale();
+
+    }
+
+    IEnumerator training()
+    {
+        if(training_queue.Count == 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        else
+        {
+            troop_queue tr = training_queue[0];
+            yield return new WaitForSeconds(tr.training/data_object.FPS);
+            spawn_player_troop(tr.tier, tr.age);
+            training_queue.RemoveAt(0);
+        }
+        StartCoroutine(training());
     }
 
     IEnumerator ability1(int bullets_launched)
@@ -519,7 +645,7 @@ public class GameManager : MonoBehaviour
             Vector2 dir = new Vector2(0, -1f);
             Vector2 noise = new Vector2(Random.Range(-0.2f, 0.2f), 0f);
             dir += noise;
-            Vector2 spawn = new Vector2(Random.Range(-8f, 8f), spawn_ability.transform.position.y);
+            Vector2 spawn = new Vector2(spawn_ability.transform.position.x + Random.Range(-8f, 8f), spawn_ability.transform.position.y);
             spawn_bullet(dir, spawn);
             StartCoroutine(ability1(bullets_launched + 1));
         }
@@ -533,7 +659,7 @@ public class GameManager : MonoBehaviour
             Vector2 dir = new Vector2(0, -1f);
             Vector2 noise = new Vector2(Random.Range(-0.1f, 0.1f), 0f);
             dir += noise;
-            Vector2 spawn = new Vector2(Random.Range(-8f, 8f), spawn_ability.transform.position.y);
+            Vector2 spawn = new Vector2(spawn_ability.transform.position.x + Random.Range(-8f, 8f), spawn_ability.transform.position.y);
             spawn_bullet(dir, spawn);
             StartCoroutine(ability2(bullets_launched + 1));
         }
@@ -545,7 +671,7 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds((15 / data_object.FPS));
             Vector2 dir = new Vector2(0, -1f);
-            Vector2 spawn = new Vector2(-9f + bullets_launched * 60f / data_object.COEFF, spawn_ability.transform.position.y);
+            Vector2 spawn = new Vector2(spawn_ability.transform.position.x + -9f + bullets_launched * 60f / data_object.COEFF, spawn_ability.transform.position.y);
             spawn_bullet(dir, spawn, 400);
             StartCoroutine(ability4(bullets_launched + 1));
         }
@@ -557,16 +683,27 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds((5 / data_object.FPS));
             Vector2 dir = new Vector2(0, -1f);
-            Vector2 spawn = new Vector2(-9f + bullets_launched * 50f / data_object.COEFF, spawn_ability.transform.position.y);
+            Vector2 spawn = new Vector2(spawn_ability.transform.position.x + -9f + bullets_launched * 50f / data_object.COEFF, spawn_ability.transform.position.y);
             spawn_bullet(dir, spawn, 1000);
             StartCoroutine(ability5(bullets_launched + 1));
         }
     }
     IEnumerator ability3()
     {
-    
-        //to be done
-        yield return new WaitForSeconds(10f);
-        
+
+        //the troop regenerates 1 hp every frame (41 frames per second)
+        int troop_count = player_troops_queue.Count;
+        for (int i = 0; i < troop_count; i++)
+        {
+            Troop tr = player_troops_queue[i].GetComponent<Troop>();
+            tr.is_regenerating = true;
+        }
+        yield return new WaitForSeconds(14.6f);
+        troop_count = player_troops_queue.Count;
+        for (int i = 0; i < troop_count; i++)
+        {
+            Troop tr = player_troops_queue[i].GetComponent<Troop>();
+            tr.is_regenerating = false;
+        }
     }
 }

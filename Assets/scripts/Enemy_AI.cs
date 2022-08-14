@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Enemy_AI : MonoBehaviour
 {
     /*
@@ -36,43 +37,129 @@ public class Enemy_AI : MonoBehaviour
     20000 -> buy slot, sell all slots, turret3 slot 4
      */
 
-    [HideInInspector] public GameManager game_manager;
+    public GameManager game_manager;
+    int unit_level = 0;
 
-    void Protocol_age1()
+    public void Protocol_age1()
+    {
+        unit_level = 0;
+        StartCoroutine(upgrade_unity_level(1500));
+        StartCoroutine(upgrade_unity_level(5000));
+        StartCoroutine(upgrade_age(8000));
+
+        StartCoroutine(buy_turret(1000, 0, 0));
+
+        StartCoroutine(sell_turret(3950, 0));
+        StartCoroutine(buy_turret(4000, 1, 0));
+
+        StartCoroutine(sell_turret(5950, 0));
+        StartCoroutine(buy_turret(6000, 2, 0));
+    }
+    public void Protocol_age2()
+    {
+        unit_level = 0;
+        StartCoroutine(upgrade_unity_level(1500));
+        StartCoroutine(upgrade_unity_level(5000));
+        StartCoroutine(upgrade_age(8000));
+
+        StartCoroutine(sell_turret(950, 0));
+        StartCoroutine(buy_turret(1000, 0, 0));
+
+        StartCoroutine(sell_turret(3950, 0));
+        StartCoroutine(buy_turret(4000, 2, 0));
+
+        StartCoroutine(buy_turret(6000, 1, 1));
+    }
+    public void Protocol_age3()
     {
 
+        unit_level = 0;
+        StartCoroutine(upgrade_unity_level(1500));
+        StartCoroutine(upgrade_unity_level(5000));
+        StartCoroutine(upgrade_age(8000));
+
+        StartCoroutine(sell_turret(950, 0));
+        StartCoroutine(buy_turret(1000, 0, 0));
+
+        StartCoroutine(sell_turret(3950, 1));
+        StartCoroutine(buy_turret(4000, 0, 1));
+
+        StartCoroutine(sell_turret(5950, 0));
+        StartCoroutine(sell_turret(5950, 1));
+        StartCoroutine(buy_turret(6000, 2, 2));
     }
-    void Protocol_age2()
+    public void Protocol_age4()
     {
+        unit_level = 0;
+        StartCoroutine(upgrade_unity_level(1500));
+        StartCoroutine(upgrade_unity_level(5000));
+        StartCoroutine(upgrade_age(8000));
+
+        StartCoroutine(buy_turret(5000, 0, 0));
+
+        StartCoroutine(sell_turret(6950, 2));
+        StartCoroutine(sell_turret(6950, 0));
+
+        StartCoroutine(buy_turret(7000, 1, 1));
 
     }
-    void Protocol_age3()
+    public void Protocol_age5()
     {
+        unit_level = 0;
+        StartCoroutine(upgrade_unity_level(1500));
+        StartCoroutine(upgrade_unity_level(5000));
 
-
+        StartCoroutine(buy_turret(5000, 0, 0));
+        StartCoroutine(sell_turret(12000, 0));
+        StartCoroutine(sell_turret(12000, 1));
+        StartCoroutine(sell_turret(12000, 2));
+        StartCoroutine(buy_turret(12050, 1, 1));
+        StartCoroutine(sell_turret(20000, 0));
+        StartCoroutine(sell_turret(20000, 1));
+        StartCoroutine(sell_turret(20000, 2));
+        StartCoroutine(buy_turret(20050, 2, 3));
     }
-    void Protocol_age4()
-    {
 
-
-    }
-    void Protocol_age5()
-    {
-
-    }
-
-    IEnumerator Do_function(int frames, int action)
-    {
-        yield return new WaitForSeconds(frames/41f);
-    }
+   
 
     void Start()
     {
         Protocol_age1();
+        StartCoroutine(Spawn_troops());
     }
-    private void Update()
+
+    IEnumerator upgrade_age(int frames)
     {
-        
+        yield return new WaitForSeconds(frames / game_manager.data_object.FPS);
+        game_manager.upgrade_age_enemy();
+    }
+    IEnumerator upgrade_unity_level(int frames)
+    {
+        yield return new WaitForSeconds(frames / game_manager.data_object.FPS);
+        unit_level += 1;
+    }
+
+    IEnumerator sell_turret(int frames, int slot)
+    {
+        yield return new WaitForSeconds(frames / game_manager.data_object.FPS);
+        game_manager.sell_turret_enemy(slot);
+    }
+    IEnumerator buy_turret(int frames, int tier, int slot)
+    {
+        yield return new WaitForSeconds(frames / game_manager.data_object.FPS);
+        game_manager.buy_turret_enemy(tier,slot);
+    }
+
+    IEnumerator Spawn_troops()
+    {
+        yield return new WaitForSeconds(1f);
+        float spawn = Random.Range(0f, 1f);
+        if(spawn < 0.3f)
+        {
+            int unit_type = Random.Range(0, unit_level+1);
+            game_manager.dispatch_spawn_troop(unit_type, false);
+        }
+        StartCoroutine(Spawn_troops());
     }
 
 }

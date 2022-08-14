@@ -136,4 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072f7d338219e84d880329fc9d19cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
+  isPlayer: 0
   direction: {x: -5, y: 5}
+  data: {fileID: 0}

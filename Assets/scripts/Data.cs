@@ -26,6 +26,7 @@ public class Data : MonoBehaviour
         protected float[] troop_ranged_speeds = { 0f, 0.8f, 0f, 0f, 1f, 0f, 0f, 1.15f, 0f, 0f, 0.52f, 0f, 0f, 0.35f, 0f, 0.35f };
         protected float[] troop_walking_ranged_speeds = { 0f, 1.07f, 0f, 0f, 1f, 0f, 0f, 1.20f, 0f, 0f, 1.20f, 0f, 0f, 0.95f, 0f, 0.95f };
 
+        public int[] base_hp = { 500, 1100, 2000, 3200, 4700 };
         //true for melee, false for mixed
         protected bool[] troop_type = { true, false, true, true, false, true, true, false, true, true, false, true, true, false, true, false };
         //turret attack speed 
@@ -37,8 +38,8 @@ public class Data : MonoBehaviour
         
 
         protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.07f, 0.07f };
-        protected int[] turret_speed_add = { 30, 11, 20, 70, 70, 50, 50, 70, 70, 70, 80, 0, 40, 10, 10 }; // I didn t totally figure out how these values work so I adjusted some of them to match in game time
-        protected int[] turret_damage = { 12, 5, 25, 40, 50, 100, 30, 70, 100, 70, 100, 60, 100, 40, 60 };
+        protected int[] turret_speed_add = { 30, 11, 20, 70, 70, 50, 50, 70, 70, 70, 80, 0, 40, 11, 11 }; // I didn t totally figure out how these values work so I adjusted some of them to match in game time
+        protected int[] turret_damage = { 12, 5, 25, 40, 50, 125, 30, 70, 100, 70, 100, 60, 100, 40, 60 };
         protected int[] turret_range = { 350, 300, 400, 400, 300, 50, 500, 500, 500, 500, 500, 500, 400, 500, 550 };
         protected int[] turret_fragment_damage = { 0, 0, 0, 0, 10, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0 };
         protected bool[] turret_makes_fragment = { false, false, false, false, true, false, false, false, true, false, false, false, false, false, false };

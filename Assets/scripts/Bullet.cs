@@ -10,11 +10,10 @@ public class Bullet : MonoBehaviour
     public bool isPlayer;
     [HideInInspector]
     public Vector2 direction;
-    Data data;
+    public Data data;
     private void Start()
     {
         StartCoroutine(AutoDestroy());
-        data = new Data();
     }
     private void Update()
     {
@@ -27,38 +26,40 @@ public class Bullet : MonoBehaviour
     {
         GameObject gm = collision.gameObject;
         Troop tr = gm.GetComponent<Troop>();
-
-        if (!tr.isPlayer && isPlayer)
+        if (tr != null)
         {
-            if (TD != null)
+            if (!tr.isPlayer && isPlayer)
             {
-                tr.troop_data.health -= TD.damage;
-                if (TD.makes_fragments)
+                if (TD != null)
                 {
-                    // additional instatiating
+                    tr.troop_data.health -= TD.damage;
+                    if (TD.makes_fragments)
+                    {
+                        // additional instatiating
+                    }
                 }
-            }
-            else
-            {
-                tr.troop_data.health -= damage;
-            }
-            Destroy(gameObject);
-        }
-        if(tr.isPlayer && !isPlayer)
-        {
-            if (TD != null)
-            {
-                tr.troop_data.health -= TD.damage;
-                if (TD.makes_fragments)
+                else
                 {
-                    // additional instatiating
+                    tr.troop_data.health -= damage;
                 }
+                Destroy(gameObject);
             }
-            else
+            if (tr.isPlayer && !isPlayer)
             {
-                tr.troop_data.health -= damage;
+                if (TD != null)
+                {
+                    tr.troop_data.health -= TD.damage;
+                    if (TD.makes_fragments)
+                    {
+                        // additional instatiating
+                    }
+                }
+                else
+                {
+                    tr.troop_data.health -= damage;
+                }
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
 
