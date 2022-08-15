@@ -72,13 +72,25 @@ public class GameManager : MonoBehaviour
 
     public void send_data()
     {
+        /*
+         * inputs = (in_train,
+         * player_health, 
+         * enemy_health, 
+         * money, 
+         * xp, 
+         * battle_place, 
+         * ability, 
+         * *player_troops_total,
+         * *enemy_troops_total, 
+         * slots_available, 
+         * *age, 
+         * *enemy_age, 
+         * *new_turrets)
+         */
 
     }
-    public void Receive_action()
-    {
 
-    }
-    public void take_action(int action)
+    public bool take_action(int action)
     {
         //actions i used in the api for the original game
         //15 actions
@@ -99,12 +111,82 @@ public class GameManager : MonoBehaviour
              "wait":self.nothing,
              "ability":self.use_ability,
          }*/
-        switch (action)
+        if(action == 0)
         {
-            case 0:
-                command_spawn_troop_tier_1();
-                break;
+            return command_spawn_troop_tier_1();
         }
+        else
+        if(action == 1)
+        {
+            return command_spawn_troop_tier_2();
+        }
+        else
+        if (action == 2)
+        {
+            return command_spawn_troop_tier_3();
+        }
+        else
+        if (action == 3)
+        {
+            return command_spawn_troop_tier_4();
+        }
+        else
+        if (action == 4)
+        {
+            return command_buy_slot();
+        }
+        else
+        if (action == 5)
+        {
+            return command_spawn_turret_tier1();
+        }
+        else
+        if (action == 6)
+        {
+            return command_spawn_turret_tier2();
+        }
+        else
+        if (action == 7)
+        {
+            return command_spawn_turret_tier3();
+        }
+        else
+        if (action == 8)
+        {
+            return command_sell_spot0();
+        }
+        else
+        if (action == 9)
+        {
+            return command_sell_spot1();
+        }
+        else
+        if (action == 10)
+        {
+            return command_sell_spot2();
+        }
+        else
+        if (action == 11)
+        {
+            return command_sell_spot3();
+        }
+        else
+        if (action == 12)
+        {
+            return command_upgrade_age();
+        }
+        else
+        if (action == 13)
+        {
+            return command_wait();
+        }
+        else
+        if (action == 14)
+        {
+            return command_use_ability();
+        }
+        return false;
+
     }
     public void random_actions()
     {
@@ -137,6 +219,13 @@ public class GameManager : MonoBehaviour
         Troop troop_script = gm.GetComponent<Troop>();
 
         troop_script.next_troop = Last_friendly_spawned;
+
+        if (Last_friendly_spawned != null)
+        {
+            Troop enemy_tr = Last_friendly_spawned.GetComponent<Troop>();
+            enemy_tr.prev_troop = gm;
+        }
+
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
 
         troop_script.troop_data = tr;
@@ -166,6 +255,13 @@ public class GameManager : MonoBehaviour
         gm.transform.parent = gameObject.transform;
         gm.transform.localPosition = trans;
         troop_script.next_troop = Last_enemy_spawned;
+
+        if (Last_enemy_spawned != null)
+        {
+            Troop enemy_tr = Last_enemy_spawned.GetComponent<Troop>();
+            enemy_tr.prev_troop = gm;
+        }
+
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
         troop_script.troop_data = tr;
         troop_script.info = false;
@@ -410,7 +506,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    void spawn_bullet(Vector2 dir, Vector2 spawn, int damage = 200)
+    public void spawn_bullet(Vector2 dir, Vector2 spawn, int damage = 200, bool gravity = false, bool isPl = true)
     {
         // getting direction for bullets
         dir = dir.normalized;
@@ -418,7 +514,9 @@ public class GameManager : MonoBehaviour
         Bullet b = bulletgm.GetComponent<Bullet>();
         b.direction = dir;
         b.damage = damage;
-        b.isPlayer = true;
+        b.isPlayer = isPl;
+        b.data = data_object;
+        b.gravity = gravity;
 
     }
 
@@ -445,42 +543,58 @@ public class GameManager : MonoBehaviour
         }
             
     }
-    public void command_use_abiiliy()
+    public bool command_wait()
+    {
+        return true;
+    }
+    public bool command_use_ability()
     {
         bool can = check_use_ability();
         if (can)
         {
             use_ability();
         }
+        return can;
     }
-    public void command_spawn_troop_tier_1()
+    public bool command_spawn_troop_tier_1()
     {
         bool can = check_spawn_player_troop(0);
         if (can)
         {
             dispatch_spawn_troop(0, true);
         }
-        //return can;
+        return can;
     }
-    public void command_spawn_troop_tier_2()
+    public bool command_spawn_troop_tier_2()
     {
         bool can = check_spawn_player_troop(1);
         if (can)
         {
             dispatch_spawn_troop(1, true);
         }
+        return can;
 
     }
-    public void command_spawn_troop_tier_3()
+    public bool command_spawn_troop_tier_3()
     {
         bool can = check_spawn_player_troop(2);
         if (can)
         {
             dispatch_spawn_troop(2, true);
         }
+        return can;
+    }
+    public bool command_spawn_troop_tier_4()
+    {
+        bool can = check_spawn_player_troop(3);
+        if (can)
+        {
+            dispatch_spawn_troop(3, true);
+        }
+        return can;
     }
 
-    public void command_spawn_turret_tier1()
+    public bool command_spawn_turret_tier1()
     {
         bool can = check_buy_turret_player(0);
         if (can)
@@ -496,8 +610,9 @@ public class GameManager : MonoBehaviour
             }
             buy_turret_player(0,spot);
         }
+        return can;
     }
-    public void command_spawn_turret_tier2()
+    public bool command_spawn_turret_tier2()
     {
         bool can = check_buy_turret_player(1);
         if (can)
@@ -513,8 +628,9 @@ public class GameManager : MonoBehaviour
             }
             buy_turret_player(1, spot);
         }
+        return can;
     }
-    public void command_spawn_turret_tier3()
+    public bool command_spawn_turret_tier3()
     {
         bool can = check_buy_turret_player(2);
         if (can)
@@ -530,58 +646,65 @@ public class GameManager : MonoBehaviour
             }
             buy_turret_player(2, spot);
         }
+        return can;
     }
 
-    public void command_sell_spot0()
+    public bool command_sell_spot0()
     {
         bool can = check_sell_turret_player(0);
-        print(can);
+  
         if (can)
         {
             sell_turret_player(0);
         }
+        return can;
     }
-    public void command_sell_spot1()
+    public bool command_sell_spot1()
     {
         bool can = check_sell_turret_player(1);
         if (can)
         {
             sell_turret_player(1);
         }
+        return can;
     }
-    public void command_sell_spot2()
+    public bool command_sell_spot2()
     {
         bool can = check_sell_turret_player(2);
         if (can)
         {
             sell_turret_player(2);
         }
+        return can;
     }
-    public void command_sell_spot3()
+    public bool command_sell_spot3()
     {
         bool can = check_sell_turret_player(3);
         if (can)
         {
             sell_turret_player(3);
         }
+        return can;
     }
 
-    public void command_upgrade_age()
+    public bool command_upgrade_age()
     {
         bool can = check_upgrade_age_player();
         if (can)
         {
             upgrade_age_player();
         }
+        return can;
     }
 
-    public void command_buy_slot()
+    public bool command_buy_slot()
     {
         bool can = check_buy_slot_player();
         if (can)
         {
             buy_slot_player();
         }
+        return can;
     }
 
     private void Awake()
@@ -593,19 +716,6 @@ public class GameManager : MonoBehaviour
     {
         enemy_ai = GetComponent<Enemy_AI>();
 
-        /*  upgrade_age_player();
-          upgrade_age_player();
-          upgrade_age_player();
-          upgrade_age_player();
-
-          buy_slot_player();
-          buy_slot_player();
-          buy_slot_player();
-
-          buy_turret_player(2, 0);
-          buy_turret_player(2, 1);
-          buy_turret_player(2, 2);
-          buy_turret_player(2, 3);*/
         set_timescale();
         StartCoroutine(training());
     }

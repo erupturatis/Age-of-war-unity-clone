@@ -11,7 +11,8 @@ public class Troop : MonoBehaviour
 
     [HideInInspector] public GameManager game_manager;
     [HideInInspector] public Data.TroopData troop_data; // has all the data for the troops
-    [HideInInspector] public GameObject next_troop; 
+    [HideInInspector] public GameObject next_troop;
+    [HideInInspector] public GameObject prev_troop;
     [HideInInspector] public GameObject attacked_gm;
     [HideInInspector] public bool is_regenerating = false;
     [HideInInspector] public int max_health;
@@ -250,6 +251,9 @@ public class Troop : MonoBehaviour
                 int reward = Mathf.RoundToInt(1.3f * troop_data.cost);
                 
                 game_manager.xp += reward / 2;
+                
+                
+
                 //print("new count player" + game_manager.player_troops_queue.Count);
             }
             else
@@ -261,6 +265,16 @@ public class Troop : MonoBehaviour
                 game_manager.xp += reward * 2;
                 
                 //print("new count enemies" + game_manager.enemy_troops_queue.Count);
+            }
+            if (prev_troop != null)
+            {
+                Troop prev_tr = prev_troop.GetComponent<Troop>();
+                prev_tr.next_troop = next_troop;
+            }
+            if (next_troop != null && prev_troop != null)
+            {
+                Troop next_tr = next_troop.GetComponent<Troop>();
+                next_tr.prev_troop = prev_troop;
             }
             Destroy(gameObject);
             

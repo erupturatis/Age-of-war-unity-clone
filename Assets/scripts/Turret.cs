@@ -160,16 +160,16 @@ public class Turret : MonoBehaviour
             // the catapult type of turrets have a bug that doesn t allow them to shot enemies near base
             if (isPlayer)
             {
-                if(dir.x * data.COEFF <= 50)
+                if(dir.x * data.COEFF <= 70)
                 {
-                    dir.x = 50 / data.COEFF;
+                    dir.x = 70 / data.COEFF;
                 }
             }
             else
             {
-                if (dir.x * data.COEFF >= -50)
+                if (dir.x * data.COEFF >= -70)
                 {
-                    dir.x = -50 / data.COEFF;
+                    dir.x = -70 / data.COEFF;
                 }
             }
         }
@@ -180,6 +180,7 @@ public class Turret : MonoBehaviour
         b.TD = turret_data;
         b.data = data;
         b.isPlayer = isPlayer;
+        b.game_manger = game_manager;
         
     }
 
