@@ -154,7 +154,7 @@ public class Enemy_AI : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         float spawn = Random.Range(0f, 1f);
-        if(spawn < 0.3f)
+        if(spawn < 0.3f && game_manager.enemy_troops_queue.Count<6)
         {
             int unit_type = Random.Range(0, unit_level+1);
             game_manager.dispatch_spawn_troop(unit_type, false);

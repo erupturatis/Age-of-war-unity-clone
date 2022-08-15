@@ -42,17 +42,10 @@ public class Troop : MonoBehaviour
 
     void manage_texts()
     {
-        if (troop_data.id == 2 || troop_data.id == 5 )
-        {
-            Box.size = new Vector2(0.7f, 0.25f);
-        }
-        if(troop_data.id == 11 || troop_data.id == 14)
-        {
-            Box.size = new Vector2(1.05f, 0.25f);
-        }
+        
         if (info)
         {
-
+            print("TRYING TO WRITE TEXTS");
             int health = troop_data.health;
             hp.text = "" + health;
             moving.text = "" + is_moving;
@@ -379,6 +372,14 @@ public class Troop : MonoBehaviour
         {
             local_canvas.SetActive(true);
         }
+        if (troop_data.id == 2 || troop_data.id == 5)
+        {
+            Box.size = new Vector2(0.7f, 0.25f);
+        }
+        if (troop_data.id == 11 || troop_data.id == 14)
+        {
+            Box.size = new Vector2(1.05f, 0.25f);
+        }
         manage_sprites();
         StartCoroutine(Regenerate());
     }
@@ -386,10 +387,10 @@ public class Troop : MonoBehaviour
     void Update()
     {
 
-        if (info)
+        /*if (info)
         {
             manage_texts();
-        }
+        }*/
         check_moving();
         check_attacking();
         try_moving();

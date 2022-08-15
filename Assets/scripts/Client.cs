@@ -13,50 +13,62 @@ public class Client : MonoBehaviour
 
     static Socket sck;
     private int connections = 0;
-    static int env_batch_size = 10;
 
-    public void SendData()
+    public String SendData(string data_str, int env_number)
     {
-        if (connections == 0)
+        data_str = "." + data_str;
+        int lng = data_str.Length + 1;
+        if(lng >= 10)
         {
-            sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse("192.168.100.11"), 9090);
-            try
-            {
-                sck.Connect(localEndPoint);
-            }
-            catch
-            {
-                Console.Write("Unable to connect to remote end point!\r\n");
-            }
-            
+            lng += 1;
         }
-        connections = 1;
-
-        for (int i = 0; i < env_batch_size; i++)
+        if (lng >= 100)
         {
-            string text = "data for env " + i;
-            byte[] data = Encoding.ASCII.GetBytes(text);
-            sck.Send(data);
-
-            byte[] buffer = new byte[255];
-            int receive = sck.Receive(buffer);
-            print("Received action for" + Encoding.Default.GetString(buffer));
+            lng += 1;
         }
-
-        // taking actions
-        // returning positive or negative response
-
-    }
+        string text = "" + lng + data_str;
+   
+        byte[] data = Encoding.ASCII.GetBytes(text);
+        print("before sent data");
  
-    void Start()
+        print("after sent data ");
+        byte[] buffer = new byte[16];
+        int receive = sck.Receive(buffer);
+        print("after receive data");
+        return Encoding.Default.GetString(buffer);
+    }
+    public void SendStatus(int env_number, bool status)
+    {
+        string text;
+        if (status)
+        {
+            text = "1";
+        }
+        else
+        {
+            text = "0";
+        }
+        byte[] data = Encoding.ASCII.GetBytes(text);
+        print("before send status data");
+        sck.Send(data);
+    }
+
+    public void connect_to_server()
+    {
+        sck = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse("192.168.100.11"), 9090);
+        try
+        {
+            sck.Connect(localEndPoint);
+        }
+        catch
+        {
+            Console.Write("Unable to connect to remote end point!\r\n");
+        }
+    }
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

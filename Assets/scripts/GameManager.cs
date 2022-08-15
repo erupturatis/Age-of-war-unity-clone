@@ -69,11 +69,41 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI money_txt;
     [SerializeField] TextMeshProUGUI xp_txt;
+    public int game_status = 0;
 
+    public void end_game()
+    {
+        int length = player_troops_queue.Count;
+        for(int i = 0; i < length; i++)
+        {
+            Destroy(player_troops_queue[i]);
+        }
+        length = enemy_troops_queue.Count;
+        for (int i = 0; i < length; i++)
+        {
+            Destroy(enemy_troops_queue[i]);
+        }
+        StopAllCoroutines();
+    }
+    public void check_game_status()
+    {
+        if (player_hp < 0)
+        {
+            game_status = 1;
+            end_game();
+        }
+        if(enemy_hp < 0)
+        {
+            game_status = 2;
+            end_game();
+        }
+
+    }
     public void send_data()
     {
         /*
-         * inputs = (in_train,
+         * inputs = 
+         * (in_train,
          * player_health, 
          * enemy_health, 
          * money, 
@@ -87,7 +117,18 @@ public class GameManager : MonoBehaviour
          * *enemy_age, 
          * *new_turrets)
          */
-
+        int in_train = training_queue.Count;
+        float player_health = player_hp / od.base_hp[player_age - 1];
+        float enemy_health = enemy_hp / od.base_hp[enemy_age - 1];
+        //int money = money;
+        //int xp = xp
+        //float battle_place = battle_place
+        bool ability = check_use_ability();
+        //sending troops separately
+        int slots_av = available_slots;
+        int age = player_age;
+        int eage = enemy_age;
+        //sending turrets separately
     }
 
     public bool take_action(int action)
@@ -188,8 +229,32 @@ public class GameManager : MonoBehaviour
         return false;
 
     }
-    public void random_actions()
+    public void calculate_battle_place()
     {
+        GameObject gm1 = null;
+        if (player_troops_queue.Count > 0)
+        {
+            gm1 = player_troops_queue[0];
+        }
+        GameObject gm2 = null;
+        if (enemy_troops_queue.Count > 0)
+        {
+            gm2 = enemy_troops_queue[0];
+        }
+
+        if (gm1 == null && gm2 == null)
+        {
+            battle_place = 0.5f;
+        }else
+        if (gm2 == null)
+        {
+            battle_place = (gm1.transform.localPosition.x + 9f) / 18f;
+        }
+        else
+        {
+            battle_place = (gm2.transform.localPosition.x + 9f) / 18f;
+        }
+
         
     }
 
@@ -383,6 +448,7 @@ public class GameManager : MonoBehaviour
         Vector3 trans = new Vector3(-1f, new Data.Only_Data().turret_spot[spot] / data_object.COEFF, 0f);
 
         GameObject gm = Instantiate(turret, trans + Vbase, Quaternion.identity);
+        gm.transform.parent = gameObject.transform;
         Turret turret_script = gm.GetComponent<Turret>();
         enemy_turrets[spot] = gm;
 
@@ -414,6 +480,7 @@ public class GameManager : MonoBehaviour
         Vector3 trans = new Vector3(1f, new Data.Only_Data().turret_spot[spot]/data_object.COEFF, 0f);
 
         GameObject gm = Instantiate(turret, trans + Vbase, Quaternion.identity);
+        gm.transform.parent = gameObject.transform;
         Turret turret_script = gm.GetComponent<Turret>();
         player_turrets[spot] = gm;
 
@@ -716,18 +783,23 @@ public class GameManager : MonoBehaviour
     {
         enemy_ai = GetComponent<Enemy_AI>();
 
-        set_timescale();
+        //set_timescale();
         StartCoroutine(training());
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ability_time >= 0)
+        if (game_status == 0)
         {
-            ability_time -= Time.deltaTime;
+            if (ability_time >= 0)
+            {
+                ability_time -= Time.deltaTime;
+            }
+            calculate_battle_place();
+            check_game_status();
         }
-
     }
 
     IEnumerator training()
