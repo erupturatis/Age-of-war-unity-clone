@@ -12,29 +12,21 @@ public class Client : MonoBehaviour
 {
 
     static Socket sck;
-    private int connections = 0;
-
-    public String SendData(string data_str, int env_number)
-    {
-        data_str = "." + data_str;
-        int lng = data_str.Length + 1;
-        if(lng >= 10)
-        {
-            lng += 1;
-        }
-        if (lng >= 100)
-        {
-            lng += 1;
-        }
-        string text = "" + lng + data_str;
    
+
+    public String SendData(string data_str)
+    {
+       
+        int lng = data_str.Length;
+        lng += 5;
+        string text =  "" + lng + "." + data_str;
+        //print(text);
         byte[] data = Encoding.ASCII.GetBytes(text);
-        print("before sent data");
- 
-        print("after sent data ");
-        byte[] buffer = new byte[16];
+        sck.Send(data);
+        byte[] buffer = new byte[1024];
+
         int receive = sck.Receive(buffer);
-        print("after receive data");
+
         return Encoding.Default.GetString(buffer);
     }
     public void SendStatus(int env_number, bool status)
@@ -49,7 +41,7 @@ public class Client : MonoBehaviour
             text = "0";
         }
         byte[] data = Encoding.ASCII.GetBytes(text);
-        print("before send status data");
+        //print("before send status data");
         sck.Send(data);
     }
 

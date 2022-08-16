@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     public GameObject enemy_base;
     public GameObject spawn_ability;
     public Data data_object;
-    private Data.Only_Data od;
+    public Data.Only_Data od;
     private Enemy_AI enemy_ai;
 
 
@@ -73,16 +73,20 @@ public class GameManager : MonoBehaviour
 
     public void end_game()
     {
+   
         int length = player_troops_queue.Count;
+        
         for(int i = 0; i < length; i++)
         {
             Destroy(player_troops_queue[i]);
         }
+        player_troops_queue = new List<GameObject>();
         length = enemy_troops_queue.Count;
         for (int i = 0; i < length; i++)
         {
             Destroy(enemy_troops_queue[i]);
         }
+        enemy_troops_queue = new List<GameObject>();
         StopAllCoroutines();
     }
     public void check_game_status()
@@ -98,37 +102,6 @@ public class GameManager : MonoBehaviour
             end_game();
         }
 
-    }
-    public void send_data()
-    {
-        /*
-         * inputs = 
-         * (in_train,
-         * player_health, 
-         * enemy_health, 
-         * money, 
-         * xp, 
-         * battle_place, 
-         * ability, 
-         * *player_troops_total,
-         * *enemy_troops_total, 
-         * slots_available, 
-         * *age, 
-         * *enemy_age, 
-         * *new_turrets)
-         */
-        int in_train = training_queue.Count;
-        float player_health = player_hp / od.base_hp[player_age - 1];
-        float enemy_health = enemy_hp / od.base_hp[enemy_age - 1];
-        //int money = money;
-        //int xp = xp
-        //float battle_place = battle_place
-        bool ability = check_use_ability();
-        //sending troops separately
-        int slots_av = available_slots;
-        int age = player_age;
-        int eage = enemy_age;
-        //sending turrets separately
     }
 
     public bool take_action(int action)
