@@ -123,6 +123,101 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &86364749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 86364751}
+  - component: {fileID: 86364750}
+  m_Layer: 0
+  m_Name: aux
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &86364750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86364749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e1d500cd68ffe4d9dad087e5ca5d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  troop_sprites:
+  - {fileID: 21300000, guid: 11cb3b8208a29a24399de5f810a5892a, type: 3}
+  - {fileID: 21300000, guid: e2e2e6f5e91f2794aaaeaf977de6fc97, type: 3}
+  - {fileID: 21300000, guid: b466ae8b0f0e5604cbd4f5fd9f2e3fac, type: 3}
+  - {fileID: 21300000, guid: 8a2a4c4593bdb7b48b804c1c9762af74, type: 3}
+  - {fileID: 21300000, guid: fe92e5a4709803545bba166518018190, type: 3}
+  - {fileID: 21300000, guid: b1cbb5ce09a13ee43b1e85b7620f896c, type: 3}
+  - {fileID: 21300000, guid: ac00bfe7fe982d44b833b29070c71df1, type: 3}
+  - {fileID: 21300000, guid: 900211d0869c91e419358610f9cefd71, type: 3}
+  - {fileID: 21300000, guid: 49e5113c0532b754d8d88e02504f1210, type: 3}
+  - {fileID: 21300000, guid: ad426f68b3b1deb429c1226b106500a5, type: 3}
+  - {fileID: 21300000, guid: 00a7cd50a66d3184ebb4579f916af5fc, type: 3}
+  - {fileID: 21300000, guid: 35fb000de5ead174f9e0a4424e01484c, type: 3}
+  - {fileID: 21300000, guid: 2420c25d38cfc6445a2cedc34ccfd226, type: 3}
+  - {fileID: 21300000, guid: 289c3484258da1e4f88a993e93094896, type: 3}
+  - {fileID: 21300000, guid: e656c7ca51f703a44b5fde034edca1be, type: 3}
+  - {fileID: 21300000, guid: fe92e5a4709803545bba166518018190, type: 3}
+  turret_sprites:
+  - {fileID: 21300000, guid: 9c00dc3b894295d4d90b1f0c8f3cb5e3, type: 3}
+  - {fileID: 21300000, guid: a9818837c3976404cb33516644f334db, type: 3}
+  - {fileID: 21300000, guid: a4766111884f90846be9a2529b84eee7, type: 3}
+  - {fileID: 21300000, guid: e72b714a52e9ca1469d6e797c36e1282, type: 3}
+  - {fileID: 21300000, guid: 02d1dff5e5595374b92ed93cfac829bd, type: 3}
+  - {fileID: 21300000, guid: cef8340b60bf4ee40a805e279760b475, type: 3}
+  - {fileID: 21300000, guid: a697f44951d9e284fafabc7330a1e448, type: 3}
+  - {fileID: 21300000, guid: e50dded643f9f984ea75db51c26f8f01, type: 3}
+  - {fileID: 21300000, guid: ee0e47c84d6c82e49b7e3d8badb5987b, type: 3}
+  - {fileID: 21300000, guid: 85f27c04a5184634583f7f90fce610ca, type: 3}
+  - {fileID: 21300000, guid: 069886e90579b804e890f3a2e41bc91c, type: 3}
+  - {fileID: 21300000, guid: 078744d40544baf4fbb79a39e213b708, type: 3}
+  - {fileID: 21300000, guid: d11217df50dda864696b725630d97a37, type: 3}
+  - {fileID: 21300000, guid: d3a10881e311fd14a98be426b1073345, type: 3}
+  - {fileID: 21300000, guid: 06dd0362e6d526040892da7d0133216f, type: 3}
+  bases_sprites:
+  - {fileID: 21300000, guid: 9812fe9df9b950b41914a1b4bad75a5b, type: 3}
+  - {fileID: 21300000, guid: 70694e01c77d29a4193199fb66efdd0c, type: 3}
+  - {fileID: 21300000, guid: 70a20ac3ddabc754694040ab582dd5c7, type: 3}
+  - {fileID: 21300000, guid: fd7ba26868591024a8849800cb558a27, type: 3}
+  - {fileID: 21300000, guid: 8fd914376e659a044ae9ccd89fcea522, type: 3}
+  ability_sprites:
+  - {fileID: 21300000, guid: 3f0261229f75dfe40800f0d29def3d11, type: 3}
+  - {fileID: 21300000, guid: bd0886a1d10b01a498ac0908f5a0afb1, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 58bd7080ca5dc114cb3afc0e2f5e7aca, type: 3}
+  - {fileID: 21300000, guid: 65daa34124ebe5a4d87aab0a68a4f00d, type: 3}
+  bases_towers_sprites:
+  - {fileID: 21300000, guid: 9b5b9fb344ddcf842adc8240f71c8b4b, type: 3}
+  - {fileID: 21300000, guid: 466726d61c2488347954c01c334d3aac, type: 3}
+  - {fileID: 21300000, guid: b1285d45ebb755f45adb59b558c863d1, type: 3}
+  - {fileID: 21300000, guid: a8984ce1a31b4d74baa2e3074aab0b07, type: 3}
+  - {fileID: 21300000, guid: e5e08b3b1d2abef46af9c45e1103b2ef, type: 3}
+--- !u!4 &86364751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86364749}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 78.730736, y: 123.19162, z: 1.4182276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &422060606
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +360,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2420c25d38cfc6445a2cedc34ccfd226, type: 3}
   - {fileID: 21300000, guid: 289c3484258da1e4f88a993e93094896, type: 3}
   - {fileID: 21300000, guid: e656c7ca51f703a44b5fde034edca1be, type: 3}
+  - {fileID: 21300000, guid: fe92e5a4709803545bba166518018190, type: 3}
   turret_sprites:
   - {fileID: 21300000, guid: 9c00dc3b894295d4d90b1f0c8f3cb5e3, type: 3}
   - {fileID: 21300000, guid: a9818837c3976404cb33516644f334db, type: 3}
@@ -312,7 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   number_of_envs: 50
-  env_speed: 10
+  env_speed: 5
   env: {fileID: 8366924046424073057, guid: 48eb3b25263efb742b0f181a6c360cee, type: 3}
   data_object: {fileID: 517246212}
   managers: []
@@ -321,6 +417,9 @@ MonoBehaviour:
   finished_envs: 0
   batch_size: 100
   batch_to_train: 100
+  length: 0
+  diff: 1
+  generation: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

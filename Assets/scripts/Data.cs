@@ -15,7 +15,7 @@ public class Data : MonoBehaviour
         protected int[] troop_ranged_damages = { 0, 8, 0, 0, 20, 0, 0, 20, 0, 0, 30, 0, 0, 80, 0, 400 };
 
         protected int[] troop_melee_ranges = { 20, 20, 20, 20, 20, 20, 25, 25, 25, 25, 25, 20, 20, 20, 20, 20 };
-        protected int[] troop_ranged_ranges = { 0, 100, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 150 };
+        protected int[] troop_ranged_ranges = { 0, 100, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 0, 110, 0, 130 };
         protected int[] troop_lengths = { 20, 20, 80, 20, 20, 80, 20, 20, 20, 20, 20, 120, 20, 20, 100, 20 };
 
         // the speed of the initial attack is different from the others
@@ -33,11 +33,11 @@ public class Data : MonoBehaviour
         public string[] turret_name = { "Rock slingshot", "egg automatic", "primitive catapult", "Catapult", "Fire Catapult", "oil", "Small Cannon", "Medium Cannon", "Big cannon", "gun", "rocket launcher", "double gun", "laser", "red pew pew", "blue pew pew" };
         public int[] turret_cost = { 100, 200, 500, 500, 750, 1000, 1500, 3000, 6000, 7000, 9000, 14000, 24000, 40000, 100000 };
         public int[] turret_spot = { 20, 68, 116, 164 };
-        public int[] xp_cost = { 4000, 14000, 45000, 200000 };
+        public int[] xp_cost = { 4000, 14000, 45000, 200000, 10000000 };
         public int[] slot_cost = { 1000, 3000, 7500 };
         
 
-        protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.07f, 0.07f };
+        protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.17f, 0.17f };
         protected int[] turret_speed_add = { 30, 11, 20, 70, 70, 50, 50, 70, 70, 70, 80, 0, 40, 11, 11 }; // I didn t totally figure out how these values work so I adjusted some of them to match in game time
         protected int[] turret_damage = { 12, 5, 25, 40, 50, 125, 30, 70, 100, 70, 100, 60, 100, 40, 60 };
         protected int[] turret_range = { 350, 300, 380, 400, 300, 50, 500, 500, 500, 500, 500, 500, 400, 500, 550 };
@@ -79,7 +79,7 @@ public class Data : MonoBehaviour
         public int range_ranged = 0;
         public int range_melee = 20;
 
-        public float speed = 39f; // the game has a standard move speed for all troops
+        public float speed = 30f; // the game has a standard move speed for all troops
         // a troop walks 450 units in 11.5 seconds so the speed should be 450/11.5
         public int length = 20;
 

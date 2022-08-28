@@ -239,7 +239,14 @@ public class Troop : MonoBehaviour
             //print("troop died");
             if (isPlayer)
             {
-                game_manager.player_troops[troop_data.id%3] -= 1;
+                if (troop_data.id == 15)
+                {
+                    game_manager.player_troops[3] -= 1;
+                }
+                else
+                {
+                    game_manager.player_troops[troop_data.id % 3] -= 1;
+                }
                 game_manager.player_troops_queue.Remove(gameObject);
                 int reward = Mathf.RoundToInt(1.3f * troop_data.cost);
                 
@@ -359,11 +366,13 @@ public class Troop : MonoBehaviour
     {
         data = game_manager.data_object;
         max_health = troop_data.health;
+        
+        info = false;
         if (!isPlayer && !info)
         {
             gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
         }
-
+        
         if (!info)
         {
             local_canvas.SetActive(false);
@@ -374,11 +383,11 @@ public class Troop : MonoBehaviour
         }
         if (troop_data.id == 2 || troop_data.id == 5)
         {
-            Box.size = new Vector2(0.7f, 0.25f);
+            Box.size = new Vector2(0.7f, 0.5f);
         }
         if (troop_data.id == 11 || troop_data.id == 14)
         {
-            Box.size = new Vector2(1.05f, 0.25f);
+            Box.size = new Vector2(1.05f, 0.5f);
         }
         manage_sprites();
         StartCoroutine(Regenerate());
@@ -387,10 +396,10 @@ public class Troop : MonoBehaviour
     void Update()
     {
 
-        /*if (info)
+        if (info)
         {
             manage_texts();
-        }*/
+        }
         check_moving();
         check_attacking();
         try_moving();

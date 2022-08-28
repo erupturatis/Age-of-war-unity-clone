@@ -11,6 +11,7 @@ public class Turret : MonoBehaviour
     [HideInInspector] public Data.TurretData turret_data; // has all the data for the current turret
     [HideInInspector] public GameObject attacked_gm;
     [HideInInspector] public int slot;
+    
 
     bool attacking_range;
     bool range_routine;

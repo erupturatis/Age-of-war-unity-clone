@@ -38,7 +38,7 @@ public class Enemy_AI : MonoBehaviour
      */
 
     public GameManager game_manager;
-    int unit_level = 0;
+    public int unit_level = 0;
 
     public void Protocol_age1()
     {
@@ -124,7 +124,7 @@ public class Enemy_AI : MonoBehaviour
 
     void Start()
     {
-        Protocol_age1();
+    
         StartCoroutine(Spawn_troops());
     }
 
@@ -135,8 +135,10 @@ public class Enemy_AI : MonoBehaviour
     }
     IEnumerator upgrade_unity_level(int frames)
     {
+     
         yield return new WaitForSeconds(frames / game_manager.data_object.FPS);
         unit_level += 1;
+        
     }
 
     IEnumerator sell_turret(int frames, int slot)
@@ -156,9 +158,16 @@ public class Enemy_AI : MonoBehaviour
         float spawn = Random.Range(0f, 1f);
         if(spawn < 0.3f && game_manager.enemy_troops_queue.Count<6)
         {
+            //print("spawned");
             int unit_type = Random.Range(0, unit_level+1);
             game_manager.dispatch_spawn_troop(unit_type, false);
+        }else
+        {
+            /*print(game_manager.enemy_troops_queue.Count );
+            print(spawn);
+            print("\n");*/
         }
+
         StartCoroutine(Spawn_troops());
     }
 

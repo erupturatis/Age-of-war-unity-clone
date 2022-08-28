@@ -7,9 +7,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
 
     int action = 0;
+    public int state = 0;
+    public float diff = 1f;
     public int player_age = 1;
     public int enemy_age = 1;
-    public int difficulty = 1;
+    public int identifier = 1;
 
     public float ability_time = 0;
 
@@ -73,39 +75,210 @@ public class GameManager : MonoBehaviour
 
     public void end_game()
     {
-   
-        int length = player_troops_queue.Count;
-        
-        for(int i = 0; i < length; i++)
+        if (game_status == 1)
         {
-            Destroy(player_troops_queue[i]);
+            int length = player_troops_queue.Count;
+
+            for (int i = 0; i < length; i++)
+            {
+                Destroy(player_troops_queue[i]);
+            }
+            player_troops_queue = new List<GameObject>();
+            length = enemy_troops_queue.Count;
+            for (int i = 0; i < length; i++)
+            {
+                Destroy(enemy_troops_queue[i]);
+            }
+            enemy_troops_queue = new List<GameObject>();
+            
+            gameObject.SetActive(false);
         }
-        player_troops_queue = new List<GameObject>();
-        length = enemy_troops_queue.Count;
-        for (int i = 0; i < length; i++)
+        else
         {
-            Destroy(enemy_troops_queue[i]);
+            //print()
         }
-        enemy_troops_queue = new List<GameObject>();
         StopAllCoroutines();
+
+        enemy_ai.StopAllCoroutines();
+
     }
     public void check_game_status()
     {
+        if(xp > 10000000)
+        {
+            game_status = 1;
+            
+        }
         if (player_hp < 0)
         {
             game_status = 1;
             end_game();
         }
-        if(enemy_hp < 0)
+        if(enemy_hp < 0 && player_troops[3] != 0)
         {
             game_status = 2;
             end_game();
         }
+        else if(enemy_hp < 0)
+        {
+            // sometimes the ai has a stroke of luck and wins in the second or fourth age but the result can t be reproduced consistently
+            enemy_hp += 1000;
+        }
+
+    }
+    public void act1(int action1) {
+        if (player_troops_queue.Count >= 20)
+        {
+            return;
+        }
+        if (action1 == 3)
+        {
+
+            command_spawn_troop_tier_1();
+        }
+        else
+            if (action1 == 1)
+        {
+
+            command_spawn_troop_tier_2();
+        }
+        else
+            if (action1 == 2)
+        {
+
+            command_spawn_troop_tier_3();
+        }
+        else
+            if (action1 == 0)
+        {
+            command_wait();
+        }
+    }
+    public void act2(int action2)
+    {
+        if (action2 == 7)
+        {
+            command_spawn_turret_tier1();
+        }
+        else
+        if (action2 == 1)
+        {
+            command_spawn_turret_tier2();
+        }
+        else
+        if (action2 == 2)
+        {
+            command_spawn_turret_tier3();
+        }
+        else
+        if (action2 == 3)
+        {
+            command_sell_spot0();
+        }
+        else
+        if (action2 == 4)
+        {
+            command_sell_spot1();
+        }
+        else
+        if (action2 == 5)
+        {
+            command_sell_spot2();
+        }
+        else
+        if (action2 == 6)
+        {
+            command_sell_spot3();
+        }
+        else
+        if (action2 == 0)
+        {
+            command_wait();
+        }
+    }
+
+    public void act3(int action3)
+    {
+        if (action3 == 1)
+        {
+            command_buy_slot();
+        }
+        else
+        if (action3 == 0)
+        {
+            command_wait();
+        }
+        
+    }
+    public void act4(int action4)
+    {
+        if (action4 == 1)
+        {
+            command_use_ability();
+        }
+        else
+        if (action4 == 0)
+        {
+            command_wait();
+        }
+
+    }
+    public void act5(int action5)
+    {
+        if (action5 == 1)
+        {
+            command_upgrade_age();
+        }
+        else
+        if (action5 == 0)
+        {
+            command_wait();
+        }
+
+    }
+    public void act6(int action6)
+    {
+        if (action6 == 1)
+        {
+            command_spawn_troop_tier_4();
+        }
+        else
+        if (action6 == 0)
+        {
+            command_wait();
+        }
 
     }
 
+    public bool take_split_action(string action)
+    {
+        
+        //actions will be represented by 3 digit numbers
+        int action1 = int.Parse("" + action[0]);
+        int action2 = int.Parse("" + action[1]);
+        int action3 = int.Parse("" + action[2]);
+        int action4 = int.Parse("" + action[3]);
+        int action5 = int.Parse("" + action[4]);
+        int action6 = int.Parse("" + action[5]);
+        
+        //print(action1 + " " + action2 + " " + action3 + " " + action4 + " " + action5 + " " + action6);
+
+        act1(action1);
+        act6(action6);
+        act2(action2);
+        act3(action3);
+        act4(action4);
+        act5(action5);
+
+        return false;
+    }
     public bool take_action(int action)
     {
+        if(game_status != 0)
+        {
+            return false;
+        }
+
         //actions i used in the api for the original game
         //15 actions
         /* ACTIONS_DICT = {
@@ -125,23 +298,67 @@ public class GameManager : MonoBehaviour
              "wait":self.nothing,
              "ability":self.use_ability,
          }*/
-        if(action == 0)
+        /*
+        NEW ACTIONS
+        17 actions
+        3 action groups
+
+        ACTIONS_DICT = {
+
+            1st group
+
+             "troop_tier1":self.spawn_troop1, 0
+             "troop_tier2":self.spawn_troop2, 1
+             "troop_tier3":self.spawn_troop3, 2
+             "troop_tier4":self.spawn_troop4, 3
+             "wait":self.nothing,             4
+
+            2nd group
+             "turret_tier1":self.spawn_turret1, 0
+             "turret_tier2":self.spawn_turret2, 1
+             "turret_tier3":self.spawn_turret3, 2
+             "sell_turret1":self.sell_turret1,  3
+             "sell_turret2":self.sell_turret2,  4
+             "sell_turret3":self.sell_turret3,  5
+             "sell_turret4":self.sell_turret4,  6
+             "wait": self.nothing               7
+
+            3rd group
+             "buy_turret_slot":self.add_turret_slot, 0
+               
+             "evolve":self.upgrade_age,              1
+
+             "ability":self.use_ability,             2
+    
+         }
+
+
+         */
+        if (action<=3 && player_troops_queue.Count >= 20)
         {
+            return false;
+        }
+        if (action == 0)
+        {
+            
             return command_spawn_troop_tier_1();
         }
         else
         if(action == 1)
         {
+            
             return command_spawn_troop_tier_2();
         }
         else
         if (action == 2)
         {
+            
             return command_spawn_troop_tier_3();
         }
         else
         if (action == 3)
         {
+            
             return command_spawn_troop_tier_4();
         }
         else
@@ -230,11 +447,12 @@ public class GameManager : MonoBehaviour
 
         
     }
-
+    public TextMeshProUGUI status;
     void update_text()
     {
-        money_txt.text = "" + money;
-        xp_txt.text = "" + xp;
+        money_txt.text = " money " + money;
+        xp_txt.text = "xp " + xp;
+        status.text = "Game " + identifier + " T4 troops " + player_troops[3] ;
     }
 
     public void spawn_player_troop(int tier, int age = 0)
@@ -287,6 +505,12 @@ public class GameManager : MonoBehaviour
         
         tr.id = id;
         tr.set_parameters();
+    
+        tr.melee_damage = (int)(tr.melee_damage*diff);
+    
+        tr.ranged_damage = (int)(tr.ranged_damage * diff);
+        tr.health = (int)(tr.health * diff);
+
         Vector3 trans = new Vector3(9f, -3f, 0f);
         GameObject gm = Instantiate(troop, trans, Quaternion.identity);
         Troop troop_script = gm.GetComponent<Troop>();
@@ -304,9 +528,11 @@ public class GameManager : MonoBehaviour
         troop_script.troop_data = tr;
         troop_script.info = false;
         troop_script.isPlayer = false;
+        //print(troop_script.max_health);
         Last_enemy_spawned = gm;
         enemy_troops_queue.Add(gm);
         enemy_troops[tier] += 1;
+    
 
     }
 
@@ -315,16 +541,20 @@ public class GameManager : MonoBehaviour
         float training;
         if (player)
         {
-            training = od.troop_training_times[tier + (player_age - 1) * 3];
-            troop_queue tr = new troop_queue();
-            tr.age = player_age;
-            tr.tier = tier;
-            money -= od.troop_costs[(tr.age - 1) * 3 + tr.tier];
-            tr.training = od.troop_training_times[(player_age - 1) * 3 + tier];
-            training_queue.Add(tr);
+            if (training_queue.Count <= 4)
+            {
+                training = od.troop_training_times[tier + (player_age - 1) * 3];
+                troop_queue tr = new troop_queue();
+                tr.age = player_age;
+                tr.tier = tier;
+                money -= od.troop_costs[(tr.age - 1) * 3 + tr.tier];
+                tr.training = od.troop_training_times[(player_age - 1) * 3 + tier];
+                training_queue.Add(tr);
+            }
         }
         else
         {
+            //print(tier);
             training = od.troop_training_times[tier + (enemy_age - 1) * 3];
         }
         if (!player)
@@ -343,23 +573,26 @@ public class GameManager : MonoBehaviour
         enemy_hp += od.base_hp[enemy_age] - od.base_hp[enemy_age - 1];
         enemy_age += 1;
         b.sprite_manager();
-        switch (enemy_age)
+        if (state <= 0 || state == 8 || state == 9)
         {
-            case 2:
-                enemy_ai.Protocol_age2();
-                break;
+            switch (enemy_age)
+            {
+                case 2:
+                    enemy_ai.Protocol_age2();
+                    break;
 
-            case 3:
-                enemy_ai.Protocol_age3();
-                break;
+                case 3:
+                    enemy_ai.Protocol_age3();
+                    break;
 
-            case 4:
-                enemy_ai.Protocol_age4();
-                break;
+                case 4:
+                    enemy_ai.Protocol_age4();
+                    break;
 
-            case 5:
-                enemy_ai.Protocol_age5();
-                break;
+                case 5:
+                    enemy_ai.Protocol_age5();
+                    break;
+            }
         }
         
     }
@@ -388,7 +621,8 @@ public class GameManager : MonoBehaviour
         money -= od.slot_cost[total_slots - 1];
         Vector3 Vbase = player_base.transform.position;
         Vector3 trans = new Vector3(1f, od.turret_spot[total_slots] / data_object.COEFF, 0f);
-        Instantiate(slot_gm, Vbase + trans, gameObject.transform.rotation);
+        GameObject gm = Instantiate(slot_gm, Vbase + trans, gameObject.transform.rotation);
+        gm.transform.parent = gameObject.transform;
         total_slots += 1;
         available_slots += 1;
         
@@ -626,9 +860,14 @@ public class GameManager : MonoBehaviour
     }
     public bool command_spawn_troop_tier_4()
     {
+        if(player_age != 5)
+        {
+            return false;
+        }
         bool can = check_spawn_player_troop(3);
         if (can)
         {
+            //print("AI "+ identifier + " SPAWNED TIER 4");
             dispatch_spawn_troop(3, true);
         }
         return can;
@@ -752,13 +991,310 @@ public class GameManager : MonoBehaviour
         od = new Data.Only_Data();
     }
 
+    private void testing()
+    {
+        
+        Time.timeScale = 3;
+
+        upgrade_age_player();
+        upgrade_age_player();
+        upgrade_age_player();
+        upgrade_age_player();
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+
+        //spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(3);
+        spawn_player_troop(3);
+
+        buy_turret_enemy(2, 3);
+
+   
+    }
+    void Custom_state0()
+    {
+        //vanilla state 1.1 difficulty
+        spawn_enemy_troop(0);
+ 
+        enemy_ai.Protocol_age1();
+    }
+    void Custom_state8()
+    {
+        //vanilla state 1.3 difficulty
+        enemy_ai.Protocol_age1();
+    }
+    void Custom_state9()
+    {
+        //vanilla state 1.5 difficulty
+        enemy_ai.Protocol_age1();
+    }
+    void Custom_state1()
+    {
+        //start of age 5, only 3 turrets
+        buy_turret_player(0,0);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        xp = 250000;
+        money += 50000;
+        
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(1, 1);
+        upgrade_age_enemy();
+        spawn_player_troop(0);
+        enemy_ai.Protocol_age5();
+    }
+    void Custom_state6()
+    {
+        //start of age 5, 4 turrets
+        buy_turret_player(0, 0);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        buy_slot_player();
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 3);
+        upgrade_age_player();
+        upgrade_age_player();
+        xp = 250000;
+        money += 50000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(1, 1);
+        upgrade_age_enemy();
+        spawn_player_troop(0);
+        enemy_ai.Protocol_age5();
+    }
+    
+    void Custom_state2()
+    {
+        //age 5, 4 turrets, end game
+        buy_turret_player(0, 0);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        buy_turret_player(0, 3);
+        xp = 4000000;
+        money += 600000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(2, 3);
+
+        enemy_ai.unit_level = 2;
+
+    }
+    
+    void Custom_state3()
+    {
+        //age 5, end game
+        buy_turret_player(0, 0);
+        upgrade_age_player();
+
+        buy_slot_player();
+        buy_turret_player(0, 1);
+
+        upgrade_age_player();
+
+        buy_slot_player();
+        buy_turret_player(0, 2);
+
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+
+        buy_turret_player(0, 3);
+        xp = 4000000;
+        money += 700000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+
+        spawn_enemy_troop(1);
+        spawn_enemy_troop(0);
+        spawn_enemy_troop(2);
+        buy_turret_enemy(2, 3);
+
+        enemy_ai.unit_level = 2;
+
+    }
+
+    void Custom_state4()
+    {
+        //start of age 5, 4 turrets
+        buy_turret_player(0, 0);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        buy_slot_player();
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 3);
+        upgrade_age_player();
+       
+        upgrade_age_player();
+        xp = 250000;
+        money = 20000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(1, 1);
+        upgrade_age_enemy();
+        spawn_player_troop(0);
+
+        enemy_ai.Protocol_age5();
+    }
+
+    void Custom_state5()
+    {
+        //age 5, end game
+        buy_turret_player(0, 0);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        buy_slot_player();
+        buy_turret_player(0, 3);
+        upgrade_age_player();
+        
+        xp = 4000000;
+        money += 400000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(2, 3);
+        enemy_ai.unit_level = 2;
+
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(3);
+
+        spawn_enemy_troop(0);
+        spawn_enemy_troop(1);
+        
+        spawn_enemy_troop(1);
+
+    }
+    void Custom_state7()
+    {
+        //start of age 5, only 3 turrets
+        buy_turret_player(0, 0);
+        buy_slot_player();
+        buy_turret_player(0, 1);
+        upgrade_age_player();
+        
+        buy_slot_player();
+        buy_slot_player();
+        buy_turret_player(0, 3);
+        buy_turret_player(0, 2);
+        upgrade_age_player();
+        upgrade_age_player();
+        upgrade_age_player();
+        xp = 250000;
+        money += 40000;
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(1, 1);
+        upgrade_age_enemy();
+        spawn_player_troop(0);
+        enemy_ai.Protocol_age5();
+    }
+
+
     void Start()
     {
         enemy_ai = GetComponent<Enemy_AI>();
-
+        //int state = Random.Range(0, 6);
+        if(state <= 0)
+        {
+            Custom_state0();
+        }else
+        if(state == 1)
+        {
+            Custom_state1();
+        }
+        else
+        if (state == 2)
+        {
+            Custom_state2();
+        }
+        else
+        if (state == 3)
+        {
+            Custom_state3();
+        }
+        else
+        if (state == 4)
+        {
+            Custom_state4();
+        }
+        else
+        if (state == 5)
+        {
+            Custom_state5();
+        }
+        else
+        if (state == 6)
+        {
+            Custom_state6();
+        }
+        else
+        if (state == 7)
+        {
+            Custom_state7();
+        }
+        else
+        if (state == 8)
+        {
+            Custom_state8();
+        }
+        else
+        if (state == 9)
+        {
+            Custom_state9();
+        }
         //set_timescale();
         StartCoroutine(training());
-        
+        //testing();
     }
 
     // Update is called once per frame
@@ -772,6 +1308,7 @@ public class GameManager : MonoBehaviour
             }
             calculate_battle_place();
             check_game_status();
+            update_text();
         }
     }
 
@@ -779,7 +1316,7 @@ public class GameManager : MonoBehaviour
     {
         if(training_queue.Count == 0)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
         }
         else
         {
@@ -788,7 +1325,14 @@ public class GameManager : MonoBehaviour
             spawn_player_troop(tr.tier, tr.age);
             training_queue.RemoveAt(0);
         }
-        StartCoroutine(training());
+        if (game_status == 0)
+        {
+            StartCoroutine(training());
+        }
+        else
+        {
+            StopAllCoroutines();
+        }
     }
 
     IEnumerator ability1(int bullets_launched)

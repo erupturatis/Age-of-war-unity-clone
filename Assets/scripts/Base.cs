@@ -61,12 +61,15 @@ public class Base : MonoBehaviour
         Tm.text = "" + hp;
     }
 
-
-
-    void Start()
+    private void Awake()
     {
         game_manager = ParentEnvironment.GetComponent<GameManager>();
         data = ParentEnvironment.GetComponent<Data>();
+    }
+
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame

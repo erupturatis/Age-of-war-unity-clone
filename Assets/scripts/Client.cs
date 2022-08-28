@@ -12,21 +12,24 @@ public class Client : MonoBehaviour
 {
 
     static Socket sck;
-   
+    int crashes = 0;
 
     public String SendData(string data_str)
     {
-       
         int lng = data_str.Length;
         lng += 5;
+        if(lng >= 10000)
+        {
+            lng += 1;
+        }
         string text =  "" + lng + "." + data_str;
         //print(text);
         byte[] data = Encoding.ASCII.GetBytes(text);
         sck.Send(data);
-        byte[] buffer = new byte[1024];
-
+        byte[] buffer = new byte[16384];
+        
         int receive = sck.Receive(buffer);
-
+        
         return Encoding.Default.GetString(buffer);
     }
     public void SendStatus(int env_number, bool status)

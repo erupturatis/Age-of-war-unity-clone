@@ -1,0 +1,29 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 10193,
+                "file_path": "results\\new12\\AgeAgent\\AgeAgent-10193.onnx",
+                "reward": -454.2243391557173,
+                "creation_time": 1661702504.6479626,
+                "auxillary_file_paths": [
+                    "results\\new12\\AgeAgent\\AgeAgent-10193.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10193,
+            "file_path": "results\\new12\\AgeAgent.onnx",
+            "reward": -454.2243391557173,
+            "creation_time": 1661702504.6479626,
+            "auxillary_file_paths": [
+                "results\\new12\\AgeAgent\\AgeAgent-10193.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}
