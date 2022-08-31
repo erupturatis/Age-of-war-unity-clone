@@ -37,7 +37,7 @@ public class Data : MonoBehaviour
         public int[] slot_cost = { 1000, 3000, 7500 };
         
 
-        protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.35f, 0.35f };
+        protected float[] turret_speed = { 0.8f, 0.25f, 1.37f, 2.47f, 2.47f, 1.92f, 1.12f, 2f, 2f, 1.12f, 1f, 0.5f, 1f, 0.25f, 0.25f };
         protected int[] turret_speed_add = { 30, 11, 20, 70, 70, 50, 50, 70, 70, 70, 80, 0, 40, 11, 11 }; // I didn t totally figure out how these values work so I adjusted some of them to match in game time
         protected int[] turret_damage = { 12, 5, 25, 40, 50, 125, 30, 70, 100, 70, 100, 60, 100, 40, 60 };
         protected int[] turret_range = { 350, 300, 380, 400, 300, 50, 500, 500, 500, 500, 500, 500, 400, 500, 550 };

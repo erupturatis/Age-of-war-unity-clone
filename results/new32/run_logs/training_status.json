@@ -2,64 +2,64 @@
     "AgeAgent": {
         "checkpoints": [
             {
-                "steps": 4499263,
-                "file_path": "results\\new32\\AgeAgent\\AgeAgent-4499263.onnx",
-                "reward": 7478.3642578125,
-                "creation_time": 1661917797.607332,
-                "auxillary_file_paths": [
-                    "results\\new32\\AgeAgent\\AgeAgent-4499263.pt"
-                ]
-            },
-            {
-                "steps": 4999643,
-                "file_path": "results\\new32\\AgeAgent\\AgeAgent-4999643.onnx",
-                "reward": 2005.9411839076452,
-                "creation_time": 1661923623.8524303,
-                "auxillary_file_paths": [
-                    "results\\new32\\AgeAgent\\AgeAgent-4999643.pt"
-                ]
-            },
-            {
-                "steps": 5358163,
-                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5358163.onnx",
-                "reward": 7835.3369140625,
-                "creation_time": 1661927791.9461517,
-                "auxillary_file_paths": [
-                    "results\\new32\\AgeAgent\\AgeAgent-5358163.pt"
-                ]
-            },
-            {
-                "steps": 5394377,
-                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5394377.onnx",
+                "steps": 5402864,
+                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5402864.onnx",
                 "reward": null,
-                "creation_time": 1661928400.898298,
+                "creation_time": 1661935398.13874,
                 "auxillary_file_paths": [
-                    "results\\new32\\AgeAgent\\AgeAgent-5394377.pt"
+                    "results\\new32\\AgeAgent\\AgeAgent-5402864.pt"
                 ]
             },
             {
-                "steps": 5394476,
-                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5394476.onnx",
-                "reward": -458.3669738769531,
-                "creation_time": 1661928423.456657,
+                "steps": 5407333,
+                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5407333.onnx",
+                "reward": 2982.336494445801,
+                "creation_time": 1661935618.700873,
                 "auxillary_file_paths": [
-                    "results\\new32\\AgeAgent\\AgeAgent-5394476.pt"
+                    "results\\new32\\AgeAgent\\AgeAgent-5407333.pt"
+                ]
+            },
+            {
+                "steps": 5411074,
+                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5411074.onnx",
+                "reward": 5474.366729736328,
+                "creation_time": 1661935854.9298916,
+                "auxillary_file_paths": [
+                    "results\\new32\\AgeAgent\\AgeAgent-5411074.pt"
+                ]
+            },
+            {
+                "steps": 5412420,
+                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5412420.onnx",
+                "reward": 3987.5428619384766,
+                "creation_time": 1661935893.894537,
+                "auxillary_file_paths": [
+                    "results\\new32\\AgeAgent\\AgeAgent-5412420.pt"
+                ]
+            },
+            {
+                "steps": 5424398,
+                "file_path": "results\\new32\\AgeAgent\\AgeAgent-5424398.onnx",
+                "reward": 3975.919258117676,
+                "creation_time": 1661936151.9733653,
+                "auxillary_file_paths": [
+                    "results\\new32\\AgeAgent\\AgeAgent-5424398.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 5394476,
+            "steps": 5424398,
             "file_path": "results\\new32\\AgeAgent.onnx",
-            "reward": -458.3669738769531,
-            "creation_time": 1661928423.456657,
+            "reward": 3975.919258117676,
+            "creation_time": 1661936151.9733653,
             "auxillary_file_paths": [
-                "results\\new32\\AgeAgent\\AgeAgent-5394476.pt"
+                "results\\new32\\AgeAgent\\AgeAgent-5424398.pt"
             ]
         }
     },
     "metadata": {
         "stats_format_version": "0.3.0",
-        "mlagents_version": "0.28.0",
+        "mlagents_version": "0.29.0",
         "torch_version": "1.12.1+cu116"
     }
 }

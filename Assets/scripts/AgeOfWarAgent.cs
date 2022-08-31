@@ -276,14 +276,26 @@ public class AgeOfWarAgent : Agent
             Academy.Instance.EnvironmentStep();
         }
         else{
-            if(gm.game_status == 2)
+            maxt4 = Mathf.Max(maxt4, player_troops_count[3]);
+            if (gm.game_status == 2)
             {
-                ai_won += 1;
-                print("for the " + ai_won + "th time an ai won" + identifier + " with " + player_troops_count[3] + " t4 troops and a max of " + maxt4 );
-                AddReward(10000);
+                
+                if (gm.state == 0)
+                {
+                    ai_won += 1;
+                    print("for the " + ai_won + "th time an ai won" + identifier + " with " + player_troops_count[3] + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
+
+                    AddReward(10000);
+                }
+                else
+                {
+                    AddReward(1000);
+                }
+
+                
                 if (ai_won >= 3)
                 {
-                    diff += 0.1f;
+                    //diff += 0.1f;
                     print("increased diff to" + diff + "on agent " + identifier);
                     ai_won = 0;
                 }

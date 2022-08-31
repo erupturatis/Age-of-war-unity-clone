@@ -563,7 +563,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //print(tier);
+  
             training = od.troop_training_times[tier + (enemy_age - 1) * 3];
         }
         if (!player)
@@ -582,8 +582,10 @@ public class GameManager : MonoBehaviour
         enemy_hp += od.base_hp[enemy_age] - od.base_hp[enemy_age - 1];
         enemy_age += 1;
         b.sprite_manager();
-        if (state <= 0 || state == 8 || state == 9)
+     
+        if (state <= 0)
         {
+          
             switch (enemy_age)
             {
                 case 2:
@@ -1030,281 +1032,59 @@ public class GameManager : MonoBehaviour
     }
     void Custom_state0()
     {
-        //vanilla state 1.1 difficulty
-        spawn_enemy_troop(0);
- 
-        enemy_ai.Protocol_age1();
-    }
-    void Custom_state8()
-    {
-        //vanilla state 1.3 difficulty
-        enemy_ai.Protocol_age1();
-    }
-    void Custom_state9()
-    {
-        //vanilla state 1.5 difficulty
+        //vanilla state
         enemy_ai.Protocol_age1();
     }
     void Custom_state1()
     {
         //start of age 5, only 3 turrets
-        buy_turret_player(0,0);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 2);
         upgrade_age_player();
         buy_slot_player();
         upgrade_age_player();
-        xp = 250000;
-        money += 50000;
+        buy_slot_player();
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        xp = 8000000 - 1000000 * Random.Range(0,3);
+        money += 800000 - -100000 * Random.Range(0, 3);
+        int tr = Random.Range(0, 4);
+        if(tr == 3)
+        {
+            //passing
+        }
+        else
+        {
+            int sp = Random.Range(0, 4);
+            buy_turret_player(tr, sp);
+        }
         
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        buy_turret_enemy(1, 1);
-        upgrade_age_enemy();
-        spawn_player_troop(0);
-        enemy_ai.Protocol_age5();
-    }
-    void Custom_state6()
-    {
-        //start of age 5, 4 turrets
-        buy_turret_player(0, 0);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        buy_slot_player();
-        buy_turret_player(0, 2);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 3);
-        upgrade_age_player();
-        upgrade_age_player();
-        xp = 250000;
-        money += 50000;
-
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        buy_turret_enemy(1, 1);
-        upgrade_age_enemy();
-        spawn_player_troop(0);
-        enemy_ai.Protocol_age5();
-    }
-    
-    void Custom_state2()
-    {
-        //age 5, 4 turrets, end game
-        buy_turret_player(0, 0);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 2);
-        upgrade_age_player();
-        buy_slot_player();
-        upgrade_age_player();
-        buy_turret_player(0, 3);
-        xp = 4000000;
-        money += 600000;
-
         upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
         buy_turret_enemy(2, 3);
-
-        enemy_ai.unit_level = 2;
-
-    }
-    
-    void Custom_state3()
-    {
-        //age 5, end game
-        buy_turret_player(0, 0);
-        upgrade_age_player();
-
-        buy_slot_player();
-        buy_turret_player(0, 1);
-
-        upgrade_age_player();
-
-        buy_slot_player();
-        buy_turret_player(0, 2);
-
-        upgrade_age_player();
-        buy_slot_player();
-        upgrade_age_player();
-
-        buy_turret_player(0, 3);
-        xp = 4000000;
-        money += 700000;
-
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-
-        spawn_enemy_troop(1);
-        spawn_enemy_troop(0);
-        spawn_enemy_troop(2);
-        buy_turret_enemy(2, 3);
-
-        enemy_ai.unit_level = 2;
-
-    }
-
-    void Custom_state4()
-    {
-        //start of age 5, 4 turrets
-        buy_turret_player(0, 0);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        buy_slot_player();
-        buy_turret_player(0, 2);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 3);
-        upgrade_age_player();
-       
-        upgrade_age_player();
-        xp = 250000;
-        money = 20000;
-
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        buy_turret_enemy(1, 1);
-        upgrade_age_enemy();
         spawn_player_troop(0);
-
-        enemy_ai.Protocol_age5();
-    }
-
-    void Custom_state5()
-    {
-        //age 5, end game
-        buy_turret_player(0, 0);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 2);
-        upgrade_age_player();
-        buy_slot_player();
-        buy_turret_player(0, 3);
-        upgrade_age_player();
         
-        xp = 4000000;
-        money += 400000;
-
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        buy_turret_enemy(2, 3);
-        enemy_ai.unit_level = 2;
-
-        spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(3);
-
-        spawn_enemy_troop(0);
-        spawn_enemy_troop(1);
-        
-        spawn_enemy_troop(1);
-
     }
-    void Custom_state7()
-    {
-        //start of age 5, only 3 turrets
-        buy_turret_player(0, 0);
-        buy_slot_player();
-        buy_turret_player(0, 1);
-        upgrade_age_player();
-        
-        buy_slot_player();
-        buy_slot_player();
-        buy_turret_player(0, 3);
-        buy_turret_player(0, 2);
-        upgrade_age_player();
-        upgrade_age_player();
-        upgrade_age_player();
-        xp = 250000;
-        money += 40000;
 
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
-        buy_turret_enemy(1, 1);
-        upgrade_age_enemy();
-        spawn_player_troop(0);
-        enemy_ai.Protocol_age5();
-    }
+
 
 
     void Start()
     {
         enemy_ai = GetComponent<Enemy_AI>();
-        //int state = Random.Range(0, 6);
+        state = Random.Range(-2, 2);
         if(state <= 0)
         {
             Custom_state0();
-        }else
+        }
+        else
         if(state == 1)
         {
             Custom_state1();
         }
-        else
-        if (state == 2)
-        {
-            Custom_state2();
-        }
-        else
-        if (state == 3)
-        {
-            Custom_state3();
-        }
-        else
-        if (state == 4)
-        {
-            Custom_state4();
-        }
-        else
-        if (state == 5)
-        {
-            Custom_state5();
-        }
-        else
-        if (state == 6)
-        {
-            Custom_state6();
-        }
-        else
-        if (state == 7)
-        {
-            Custom_state7();
-        }
-        else
-        if (state == 8)
-        {
-            Custom_state8();
-        }
-        else
-        if (state == 9)
-        {
-            Custom_state9();
-        }
-        //set_timescale();
+     
         StartCoroutine(training());
-        //testing();
     }
 
     // Update is called once per frame
