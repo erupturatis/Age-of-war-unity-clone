@@ -1,0 +1,65 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 1882772,
+                "file_path": "results\\new14\\AgeAgent\\AgeAgent-1882772.onnx",
+                "reward": null,
+                "creation_time": 1661766149.6445954,
+                "auxillary_file_paths": [
+                    "results\\new14\\AgeAgent\\AgeAgent-1882772.pt"
+                ]
+            },
+            {
+                "steps": 1901906,
+                "file_path": "results\\new14\\AgeAgent\\AgeAgent-1901906.onnx",
+                "reward": 7352.8148193359375,
+                "creation_time": 1661766809.0584455,
+                "auxillary_file_paths": [
+                    "results\\new14\\AgeAgent\\AgeAgent-1901906.pt"
+                ]
+            },
+            {
+                "steps": 1940186,
+                "file_path": "results\\new14\\AgeAgent\\AgeAgent-1940186.onnx",
+                "reward": 123.65771484375,
+                "creation_time": 1661768388.1882658,
+                "auxillary_file_paths": [
+                    "results\\new14\\AgeAgent\\AgeAgent-1940186.pt"
+                ]
+            },
+            {
+                "steps": 1999428,
+                "file_path": "results\\new14\\AgeAgent\\AgeAgent-1999428.onnx",
+                "reward": 393.9934936523438,
+                "creation_time": 1661771065.3507743,
+                "auxillary_file_paths": [
+                    "results\\new14\\AgeAgent\\AgeAgent-1999428.pt"
+                ]
+            },
+            {
+                "steps": 2053622,
+                "file_path": "results\\new14\\AgeAgent\\AgeAgent-2053622.onnx",
+                "reward": null,
+                "creation_time": 1661773821.1657486,
+                "auxillary_file_paths": [
+                    "results\\new14\\AgeAgent\\AgeAgent-2053622.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2053622,
+            "file_path": "results\\new14\\AgeAgent.onnx",
+            "reward": null,
+            "creation_time": 1661773821.1657486,
+            "auxillary_file_paths": [
+                "results\\new14\\AgeAgent\\AgeAgent-2053622.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}

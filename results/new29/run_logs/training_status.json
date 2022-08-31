@@ -1,0 +1,56 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 553,
+                "file_path": "results\\new29\\AgeAgent\\AgeAgent-553.onnx",
+                "reward": -381.15216064453125,
+                "creation_time": 1661843308.2093341,
+                "auxillary_file_paths": [
+                    "results\\new29\\AgeAgent\\AgeAgent-553.pt"
+                ]
+            },
+            {
+                "steps": 44699,
+                "file_path": "results\\new29\\AgeAgent\\AgeAgent-44699.onnx",
+                "reward": -350.6623478939659,
+                "creation_time": 1661844059.284656,
+                "auxillary_file_paths": [
+                    "results\\new29\\AgeAgent\\AgeAgent-44699.pt"
+                ]
+            },
+            {
+                "steps": 90168,
+                "file_path": "results\\new29\\AgeAgent\\AgeAgent-90168.onnx",
+                "reward": -231.13302612304688,
+                "creation_time": 1661844994.0250828,
+                "auxillary_file_paths": [
+                    "results\\new29\\AgeAgent\\AgeAgent-90168.pt"
+                ]
+            },
+            {
+                "steps": 90302,
+                "file_path": "results\\new29\\AgeAgent\\AgeAgent-90302.onnx",
+                "reward": -444.1072692871094,
+                "creation_time": 1661845981.6816096,
+                "auxillary_file_paths": [
+                    "results\\new29\\AgeAgent\\AgeAgent-90302.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 90302,
+            "file_path": "results\\new29\\AgeAgent.onnx",
+            "reward": -444.1072692871094,
+            "creation_time": 1661845981.6816096,
+            "auxillary_file_paths": [
+                "results\\new29\\AgeAgent\\AgeAgent-90302.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}

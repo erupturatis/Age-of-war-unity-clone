@@ -104,10 +104,9 @@ public class GameManager : MonoBehaviour
     }
     public void check_game_status()
     {
-        if(xp > 10000000)
+        if(xp > 10000000 && player_troops[3] < 3)
         {
             game_status = 1;
-            
         }
         if (player_hp < 0)
         {
@@ -272,94 +271,104 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
-    public bool take_action(int action)
+    public bool take_action(int action, int aux = 0)
     {
         if(game_status != 0)
         {
             return false;
         }
-
-        //actions i used in the api for the original game
-        //15 actions
-        /* ACTIONS_DICT = {
-             "troop_tier1":self.spawn_troop1, 
-             "troop_tier2":self.spawn_troop2, 
-             "troop_tier3":self.spawn_troop3, 
-             "troop_tier4":self.spawn_troop4,
-             "buy_turret_slot":self.add_turret_slot,
-             "turret_tier1":self.spawn_turret1,
-             "turret_tier2":self.spawn_turret2,
-             "turret_tier3":self.spawn_turret3,
-             "sell_turret1":self.sell_turret1,
-             "sell_turret2":self.sell_turret2,
-             "sell_turret3":self.sell_turret3,
-             "sell_turret4":self.sell_turret4,
-             "evolve":self.upgrade_age,
-             "wait":self.nothing,
-             "ability":self.use_ability,
-         }*/
-        /*
-        NEW ACTIONS
-        17 actions
-        3 action groups
-
-        ACTIONS_DICT = {
-
-            1st group
-
-             "troop_tier1":self.spawn_troop1, 0
-             "troop_tier2":self.spawn_troop2, 1
-             "troop_tier3":self.spawn_troop3, 2
-             "troop_tier4":self.spawn_troop4, 3
-             "wait":self.nothing,             4
-
-            2nd group
-             "turret_tier1":self.spawn_turret1, 0
-             "turret_tier2":self.spawn_turret2, 1
-             "turret_tier3":self.spawn_turret3, 2
-             "sell_turret1":self.sell_turret1,  3
-             "sell_turret2":self.sell_turret2,  4
-             "sell_turret3":self.sell_turret3,  5
-             "sell_turret4":self.sell_turret4,  6
-             "wait": self.nothing               7
-
-            3rd group
-             "buy_turret_slot":self.add_turret_slot, 0
-               
-             "evolve":self.upgrade_age,              1
-
-             "ability":self.use_ability,             2
-    
-         }
+        // aux represents how many troops of a type the ai should send
+        //it will be a value between 1 and 5
+        
+        if (action == 15)
+        {
+            action = 0;
+            aux = 1;
+        }
+        if (action == 16)
+        {
+            action = 1;
+            aux = 1;
+        }
+        if (action == 17)
+        {
+            action = 2;
+            aux = 1;
+        }
+        if (action == 18)
+        {
+            action = 3;
+            aux = 1;
+            //print("action18 taken");
+        }
+        if(action == 3)
+        {
+            //print("action3 taken");
+        }
 
 
-         */
+        if (action == 19)
+        {
+            action = 0;
+            aux = 2;
+        }
+        if (action == 20)
+        {
+            action = 1;
+            aux = 2;
+        }
+        if (action == 21)
+        {
+            action = 2;
+            aux = 2;
+        }
+        if (action == 22)
+        {
+            action = 3;
+            aux = 2;
+            //print("action22 taken");
+        }
+
+
+
+
         if (action<=3 && player_troops_queue.Count >= 20)
         {
             return false;
         }
         if (action == 0)
         {
+            for (int i = 0; i <= aux; i++) {
+                command_spawn_troop_tier_1();
+            }
             
-            return command_spawn_troop_tier_1();
         }
         else
         if(action == 1)
         {
-            
-            return command_spawn_troop_tier_2();
+
+            for (int i = 0; i <= aux; i++)
+            {
+                command_spawn_troop_tier_2();
+            }
         }
         else
         if (action == 2)
         {
-            
-            return command_spawn_troop_tier_3();
+
+            for (int i = 0; i <= aux; i++)
+            {
+                command_spawn_troop_tier_3();
+            }
         }
         else
         if (action == 3)
         {
-            
-            return command_spawn_troop_tier_4();
+
+            for (int i = 0; i <= aux; i++)
+            {
+                command_spawn_troop_tier_4();
+            }
         }
         else
         if (action == 4)
@@ -673,6 +682,7 @@ public class GameManager : MonoBehaviour
         }
         slots[spot] = 1;
         turret_age[spot] = player_age;
+       
         turret_tier[spot] = tier;
         available_slots -= 1;
         money -= od.turret_cost[(player_age-1)*3 + tier];
