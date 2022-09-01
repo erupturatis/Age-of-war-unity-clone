@@ -59,7 +59,7 @@ public class MasterMlAgents : MonoBehaviour
 
     void MlAgents_Workflow()
     {
-        //set_timescale();
+        set_timescale();
         Spawn_environments();
         StartCoroutine(requesting_decisions());
     }

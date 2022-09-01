@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     }
     public void check_game_status()
     {
-        if(xp > 10000000 && player_troops[3] < 3)
+        if(xp > 7000000 && player_troops[3] < 3)
         {
             game_status = 1;
         }
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
             game_status = 1;
             end_game();
         }
-        if(enemy_hp < 0 && player_troops[3] != 0)
+        if(enemy_hp < 0 && player_troops[3] >= 3)
         {
             game_status = 2;
             end_game();
@@ -273,6 +273,7 @@ public class GameManager : MonoBehaviour
     }
     public bool take_action(int action, int aux = 0)
     {
+        
         if(game_status != 0)
         {
             return false;
@@ -1045,8 +1046,8 @@ public class GameManager : MonoBehaviour
         upgrade_age_player();
         buy_slot_player();
         upgrade_age_player();
-        xp = 8000000 - 1000000 * Random.Range(0,3);
-        money += 800000 - -100000 * Random.Range(0, 3);
+        xp = 4000000;
+        money += 500000;
         int tr = Random.Range(0, 4);
         if(tr == 3)
         {
@@ -1063,8 +1064,54 @@ public class GameManager : MonoBehaviour
         upgrade_age_enemy();
         upgrade_age_enemy();
         buy_turret_enemy(2, 3);
+
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+
+    }
+
+    void Custom_state2()
+    {
+        //start of age 5, only 3 turrets
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        xp = 4000000 - 100000 * Random.Range(0, 2);
+        money += 400000 - 100000 * Random.Range(-1, 2);
+       
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(2, 3);
+
+        int tr = Random.Range(0, 4);
+        if (tr == 3)
+        {
+            //passing
+        }
+        else
+        {
+            int sp = Random.Range(0, 4);
+            buy_turret_player(tr, sp);
+        }
+
         spawn_player_troop(0);
-        
+        spawn_player_troop(0);
+
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+
     }
 
 
@@ -1073,7 +1120,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         enemy_ai = GetComponent<Enemy_AI>();
-        state = Random.Range(-2, 2);
+        state = Random.Range(2, 3);
+        state = 0;
         if(state <= 0)
         {
             Custom_state0();
@@ -1082,6 +1130,10 @@ public class GameManager : MonoBehaviour
         if(state == 1)
         {
             Custom_state1();
+        }else
+        if(state == 2)
+        {
+            Custom_state2();
         }
      
         StartCoroutine(training());

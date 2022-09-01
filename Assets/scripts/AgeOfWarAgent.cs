@@ -23,6 +23,7 @@ public class AgeOfWarAgent : Agent
     Data.Only_Data od;
     float[] the_inputs;
     float maxt4 = 0;
+    public int iter = 0;
     int ai_won = 0;
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -59,13 +60,14 @@ public class AgeOfWarAgent : Agent
         env.scale = 1;
         env.diff = diff;
         env.identifier = identifier;
-        env.state = state;
+        env.state = iter % 10 - 7;
         //print(Academy.Instance.StepCount);
     }
 
     public void End_episode()
     {
         Destroy(env_object);
+        iter += 1;
         EndEpisode();
         Academy.Instance.EnvironmentStep();
     }
@@ -253,8 +255,7 @@ public class AgeOfWarAgent : Agent
         inputs[34] = new_turret_tiers[3];
         inputs[35] = new_turret_ages[3];
 
-       
-      
+
         the_inputs = inputs;
         if (gm.game_status == 0)
         {
@@ -280,22 +281,22 @@ public class AgeOfWarAgent : Agent
             if (gm.game_status == 2)
             {
                 
-                if (gm.state == 0)
+                if (gm.state <= 0)
                 {
-                    ai_won += 1;
-                    print("for the " + ai_won + "th time an ai won" + identifier + " with " + player_troops_count[3] + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
+                    //ai_won += 1;
 
+                    
                     AddReward(10000);
                 }
                 else
                 {
-                    AddReward(1000);
+                    AddReward(2500);
                 }
+                print("for the " + ai_won + "th time an ai won" + identifier + " with " + player_troops_count[3] + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
 
-                
                 if (ai_won >= 3)
                 {
-                    //diff += 0.1f;
+                    diff += 0.1f;
                     print("increased diff to" + diff + "on agent " + identifier);
                     ai_won = 0;
                 }
@@ -303,7 +304,7 @@ public class AgeOfWarAgent : Agent
             else
             {
                 
-                if (gm.xp > 10000000)
+                if (gm.xp > 5000000)
                 {
                     //print("ai get over 5k xp");
                     AddReward(-500);

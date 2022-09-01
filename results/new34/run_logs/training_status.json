@@ -2,46 +2,64 @@
     "AgeAgent": {
         "checkpoints": [
             {
-                "steps": 1892,
-                "file_path": "results\\new34\\AgeAgent\\AgeAgent-1892.onnx",
-                "reward": 1014.640790939331,
-                "creation_time": 1661936359.9776223,
+                "steps": 645572,
+                "file_path": "results\\new34\\AgeAgent\\AgeAgent-645572.onnx",
+                "reward": 1078.3436889648438,
+                "creation_time": 1661949233.4844787,
                 "auxillary_file_paths": [
-                    "results\\new34\\AgeAgent\\AgeAgent-1892.pt"
+                    "results\\new34\\AgeAgent\\AgeAgent-645572.pt"
                 ]
             },
             {
-                "steps": 10935,
-                "file_path": "results\\new34\\AgeAgent\\AgeAgent-10935.onnx",
-                "reward": 2045.2893308003743,
-                "creation_time": 1661936618.0018787,
+                "steps": 657659,
+                "file_path": "results\\new34\\AgeAgent\\AgeAgent-657659.onnx",
+                "reward": null,
+                "creation_time": 1661949428.2126205,
                 "auxillary_file_paths": [
-                    "results\\new34\\AgeAgent\\AgeAgent-10935.pt"
+                    "results\\new34\\AgeAgent\\AgeAgent-657659.pt"
                 ]
             },
             {
-                "steps": 344897,
-                "file_path": "results\\new34\\AgeAgent\\AgeAgent-344897.onnx",
-                "reward": 754.79931640625,
-                "creation_time": 1661944393.8492672,
+                "steps": 843650,
+                "file_path": "results\\new34\\AgeAgent\\AgeAgent-843650.onnx",
+                "reward": 1072.5892588297527,
+                "creation_time": 1661951858.8965228,
                 "auxillary_file_paths": [
-                    "results\\new34\\AgeAgent\\AgeAgent-344897.pt"
+                    "results\\new34\\AgeAgent\\AgeAgent-843650.pt"
+                ]
+            },
+            {
+                "steps": 844650,
+                "file_path": "results\\new34\\AgeAgent\\AgeAgent-844650.onnx",
+                "reward": null,
+                "creation_time": 1661951991.5305107,
+                "auxillary_file_paths": [
+                    "results\\new34\\AgeAgent\\AgeAgent-844650.pt"
+                ]
+            },
+            {
+                "steps": 873280,
+                "file_path": "results\\new34\\AgeAgent\\AgeAgent-873280.onnx",
+                "reward": 1209.7929229736328,
+                "creation_time": 1661952424.3765295,
+                "auxillary_file_paths": [
+                    "results\\new34\\AgeAgent\\AgeAgent-873280.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 344897,
+            "steps": 873280,
             "file_path": "results\\new34\\AgeAgent.onnx",
-            "reward": 754.79931640625,
-            "creation_time": 1661944393.8492672,
+            "reward": 1209.7929229736328,
+            "creation_time": 1661952424.3765295,
             "auxillary_file_paths": [
-                "results\\new34\\AgeAgent\\AgeAgent-344897.pt"
+                "results\\new34\\AgeAgent\\AgeAgent-873280.pt"
             ]
         }
     },
     "metadata": {
         "stats_format_version": "0.3.0",
-        "mlagents_version": "0.29.0",
+        "mlagents_version": "0.28.0",
         "torch_version": "1.12.1+cu116"
     }
 }

@@ -1,0 +1,56 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 499676,
+                "file_path": "results\\new33\\AgeAgent\\AgeAgent-499676.onnx",
+                "reward": -375.3901628766741,
+                "creation_time": 1661935473.6512175,
+                "auxillary_file_paths": [
+                    "results\\new33\\AgeAgent\\AgeAgent-499676.pt"
+                ]
+            },
+            {
+                "steps": 535418,
+                "file_path": "results\\new33\\AgeAgent\\AgeAgent-535418.onnx",
+                "reward": -416.31707096099854,
+                "creation_time": 1661935985.419663,
+                "auxillary_file_paths": [
+                    "results\\new33\\AgeAgent\\AgeAgent-535418.pt"
+                ]
+            },
+            {
+                "steps": 999745,
+                "file_path": "results\\new33\\AgeAgent\\AgeAgent-999745.onnx",
+                "reward": -439.33154296875,
+                "creation_time": 1661943037.3806975,
+                "auxillary_file_paths": [
+                    "results\\new33\\AgeAgent\\AgeAgent-999745.pt"
+                ]
+            },
+            {
+                "steps": 1056007,
+                "file_path": "results\\new33\\AgeAgent\\AgeAgent-1056007.onnx",
+                "reward": -333.51077336850375,
+                "creation_time": 1661943873.621873,
+                "auxillary_file_paths": [
+                    "results\\new33\\AgeAgent\\AgeAgent-1056007.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1056007,
+            "file_path": "results\\new33\\AgeAgent.onnx",
+            "reward": -333.51077336850375,
+            "creation_time": 1661943873.621873,
+            "auxillary_file_paths": [
+                "results\\new33\\AgeAgent\\AgeAgent-1056007.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}

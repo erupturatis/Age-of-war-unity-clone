@@ -38,7 +38,7 @@ behaviors:
     checkpoint_interval: 500000
     max_steps: 50000000
     time_horizon: 1000
-    summary_freq: 25000
+    summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning: null
@@ -62,7 +62,7 @@ engine_settings:
   no_graphics: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: new34
+  run_id: new36
   initialize_from: null
   load_model: false
   resume: true
