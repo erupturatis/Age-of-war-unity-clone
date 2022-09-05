@@ -97,7 +97,7 @@ public class AgeOfWarAgent : Agent
             AddReward(gm.percent_taken * 10);
             
             gm.percent_taken = 0;
-            AddReward(Mathf.Min(15, gm.money/50000));
+            AddReward(Mathf.Min(20,gm.money/50000));
             // killing enemies with turrets
             float t4_troops = the_inputs[11]*5;
             t4_troops = Mathf.Min(t4_troops, 4);
@@ -145,7 +145,7 @@ public class AgeOfWarAgent : Agent
             else
             {
 
-                if (gm.xp > 7000000)
+                if (gm.xp > 13000000)
                 {
                     //print("ai get over 5k xp");
                     AddReward(-5000);

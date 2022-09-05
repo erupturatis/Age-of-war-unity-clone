@@ -15,6 +15,7 @@ public class MasterMlAgents : MonoBehaviour
     bool won_game = false;
     public int state = 0;
     public float time_between_actions = 1.3f;
+    public bool tm = false;
 
     void set_timescale()
     {
@@ -59,7 +60,10 @@ public class MasterMlAgents : MonoBehaviour
 
     void MlAgents_Workflow()
     {
-        set_timescale();
+        if (tm)
+        {
+            set_timescale();
+        }
         Spawn_environments();
         StartCoroutine(initial());
     }

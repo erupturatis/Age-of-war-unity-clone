@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     }
     public void check_game_status()
     {
-        if(xp > 7000000 && player_troops[3] < 3)
+        if(xp > 13000000 && player_troops[3] < 3)
         {
             game_status = 1;
         }
@@ -1207,7 +1207,7 @@ public class GameManager : MonoBehaviour
         else
         {
             troop_queue tr = training_queue[0];
-            yield return new WaitForSeconds(1.2f*tr.training/data_object.FPS);
+            yield return new WaitForSeconds(tr.training/data_object.FPS);
             spawn_player_troop(tr.tier, tr.age);
             training_queue.RemoveAt(0);
         }
