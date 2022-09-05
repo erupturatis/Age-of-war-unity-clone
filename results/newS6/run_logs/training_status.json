@@ -1,0 +1,65 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 500511,
+                "file_path": "results\\newS6\\AgeAgent\\AgeAgent-500511.onnx",
+                "reward": null,
+                "creation_time": 1662191578.70457,
+                "auxillary_file_paths": [
+                    "results\\newS6\\AgeAgent\\AgeAgent-500511.pt"
+                ]
+            },
+            {
+                "steps": 501181,
+                "file_path": "results\\newS6\\AgeAgent\\AgeAgent-501181.onnx",
+                "reward": -361.33416748046875,
+                "creation_time": 1662191632.9957967,
+                "auxillary_file_paths": [
+                    "results\\newS6\\AgeAgent\\AgeAgent-501181.pt"
+                ]
+            },
+            {
+                "steps": 501181,
+                "file_path": "results\\newS6\\AgeAgent\\AgeAgent-501181.onnx",
+                "reward": null,
+                "creation_time": 1662191646.5638273,
+                "auxillary_file_paths": [
+                    "results\\newS6\\AgeAgent\\AgeAgent-501181.pt"
+                ]
+            },
+            {
+                "steps": 504179,
+                "file_path": "results\\newS6\\AgeAgent\\AgeAgent-504179.onnx",
+                "reward": -246.98455810546875,
+                "creation_time": 1662191717.4707284,
+                "auxillary_file_paths": [
+                    "results\\newS6\\AgeAgent\\AgeAgent-504179.pt"
+                ]
+            },
+            {
+                "steps": 693210,
+                "file_path": "results\\newS6\\AgeAgent\\AgeAgent-693210.onnx",
+                "reward": -101.81663513183594,
+                "creation_time": 1662194773.9225566,
+                "auxillary_file_paths": [
+                    "results\\newS6\\AgeAgent\\AgeAgent-693210.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 693210,
+            "file_path": "results\\newS6\\AgeAgent.onnx",
+            "reward": -101.81663513183594,
+            "creation_time": 1662194773.9225566,
+            "auxillary_file_paths": [
+                "results\\newS6\\AgeAgent\\AgeAgent-693210.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

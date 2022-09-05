@@ -1,0 +1,49 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1662037520",
+        "python_version": "3.7.9 (tags/v3.7.9:13c94747c7, Aug 17 2020, 18:58:18) [MSC v.1900 64 bit (AMD64)]",
+        "command_line_arguments": "Z:\\projects\\unity\\Age of war clone\\venv\\Scripts\\mlagents-learn config\\config1.yaml --time-scale 20 --run-id new37 --resume",
+        "mlagents_version": "0.28.0",
+        "mlagents_envs_version": "0.28.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.12.1+cu116",
+        "numpy_version": "1.21.6",
+        "end_time_seconds": "1662037527"
+    },
+    "total": 7.522006,
+    "count": 1,
+    "self": 0.006429100000000965,
+    "children": {
+        "run_training.setup": {
+            "total": 0.06096669999999993,
+            "count": 1,
+            "self": 0.06096669999999993
+        },
+        "TrainerController.start_learning": {
+            "total": 7.454610199999999,
+            "count": 1,
+            "self": 7.479999999926434e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 5.5264006,
+                    "count": 1,
+                    "self": 5.5264006
+                },
+                "TrainerController._save_models": {
+                    "total": 1.9281348000000005,
+                    "count": 1,
+                    "self": 0.0006127000000013538,
+                    "children": {
+                        "RLTrainer._checkpoint": {
+                            "total": 1.9275220999999991,
+                            "count": 1,
+                            "self": 1.9275220999999991
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

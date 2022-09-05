@@ -1,0 +1,47 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 2187,
+                "file_path": "results\\newS5\\AgeAgent\\AgeAgent-2187.onnx",
+                "reward": -477.17895025956005,
+                "creation_time": 1662179964.8788767,
+                "auxillary_file_paths": [
+                    "results\\newS5\\AgeAgent\\AgeAgent-2187.pt"
+                ]
+            },
+            {
+                "steps": 303104,
+                "file_path": "results\\newS5\\AgeAgent\\AgeAgent-303104.onnx",
+                "reward": -478.5666650842737,
+                "creation_time": 1662182894.091214,
+                "auxillary_file_paths": [
+                    "results\\newS5\\AgeAgent\\AgeAgent-303104.pt"
+                ]
+            },
+            {
+                "steps": 398064,
+                "file_path": "results\\newS5\\AgeAgent\\AgeAgent-398064.onnx",
+                "reward": -474.95522661351447,
+                "creation_time": 1662183786.9342775,
+                "auxillary_file_paths": [
+                    "results\\newS5\\AgeAgent\\AgeAgent-398064.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 398064,
+            "file_path": "results\\newS5\\AgeAgent.onnx",
+            "reward": -474.95522661351447,
+            "creation_time": 1662183786.9342775,
+            "auxillary_file_paths": [
+                "results\\newS5\\AgeAgent\\AgeAgent-398064.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

@@ -78,7 +78,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 150000
+  MaxStep: 1500000
   data_object: {fileID: 0}
   scale: 0
   diff: 0
@@ -88,3 +88,4 @@ MonoBehaviour:
   env: {fileID: 0}
   env_object: {fileID: 0}
   AgentMaster: {fileID: 0}
+  iter: 0

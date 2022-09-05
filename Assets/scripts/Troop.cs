@@ -45,7 +45,7 @@ public class Troop : MonoBehaviour
         
         if (info)
         {
-            print("TRYING TO WRITE TEXTS");
+          
             int health = troop_data.health;
             hp.text = "" + health;
             moving.text = "" + is_moving;
@@ -295,6 +295,12 @@ public class Troop : MonoBehaviour
                     //there is a troop alive
                     Troop enemy_script = game_manager.enemy_troops_queue[0].GetComponent<Troop>();
                     enemy_script.troop_data.health -= damage;
+                    if (enemy_script.troop_data.health <= 0)
+                    {
+                        attacking_melee = false;
+                        is_moving = true;
+                        attacking_range = false;
+                    }
                 }
                 else
                 {
@@ -311,6 +317,12 @@ public class Troop : MonoBehaviour
                     //there is a troop alive
                     Troop enemy_script = game_manager.player_troops_queue[0].GetComponent<Troop>();
                     enemy_script.troop_data.health -= damage;
+                    if (enemy_script.troop_data.health <= 0)
+                    {
+                        attacking_melee = false;
+                        is_moving = true;
+                        attacking_range = false;
+                    }
                 }
                 else
                 {
@@ -329,7 +341,7 @@ public class Troop : MonoBehaviour
         give_damage(troop_data.melee_damage);
         if (attacking_melee)
         {
-            StartCoroutine(attack_melee(troop_data.melee_speed));
+            StartCoroutine(attack_melee(troop_data.melee_speed + troop_data.attack_pause / data.FPS));
         }
         else
         {
@@ -349,11 +361,11 @@ public class Troop : MonoBehaviour
         {
             if (!is_moving)
             {
-                StartCoroutine(attack_range(troop_data.ranged_standing_speed));
+                StartCoroutine(attack_range(troop_data.ranged_standing_speed + troop_data.attack_pause / data.FPS));
             }
             else
             {
-                StartCoroutine(attack_range(troop_data.ranged_walking_speed));
+                StartCoroutine(attack_range(troop_data.ranged_walking_speed + troop_data.attack_pause / data.FPS));
             }
         }
         else
@@ -366,8 +378,7 @@ public class Troop : MonoBehaviour
     {
         data = game_manager.data_object;
         max_health = troop_data.health;
-        
-        info = false;
+
         if (!isPlayer && !info)
         {
             gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);

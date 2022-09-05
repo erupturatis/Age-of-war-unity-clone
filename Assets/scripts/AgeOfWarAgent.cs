@@ -29,7 +29,10 @@ public class AgeOfWarAgent : Agent
     {
         //print("action taken");
         env.take_action(actions.DiscreteActions[0]);
-
+        if (actions.DiscreteActions[0] == 13)
+        {
+            AddReward(7.5f);
+        }
         /*env.act1(actions.DiscreteActions[0]);
         
         env.act2(actions.DiscreteActions[1]);
@@ -71,7 +74,7 @@ public class AgeOfWarAgent : Agent
         EndEpisode();
         Academy.Instance.EnvironmentStep();
     }
-
+    
     // Update is called once per frame
     private void Start()
     {
@@ -83,6 +86,84 @@ public class AgeOfWarAgent : Agent
         
         
 
+    }
+
+    public void request_decision()
+    {
+        GameManager gm = env;
+        if (gm.game_status == 0)
+        {
+            AddReward(0.2f);
+            AddReward(gm.percent_taken * 10);
+            
+            gm.percent_taken = 0;
+            AddReward(Mathf.Min(15, gm.money/50000));
+            // killing enemies with turrets
+            float t4_troops = the_inputs[11]*5;
+            t4_troops = Mathf.Min(t4_troops, 4);
+
+            if (t4_troops >= 3)
+            {
+                //print("t4 troops on ground" + t4_troops);
+                AddReward(Mathf.Pow(5, t4_troops - 1));
+            }
+            maxt4 = Mathf.Max(maxt4, t4_troops);
+            Academy.Instance.EnvironmentStep();
+            RequestDecision();
+            //print("academy stepped");
+
+        }
+        else
+        {
+            maxt4 = Mathf.Max(maxt4, the_inputs[11] * 5);
+            if (gm.game_status == 2)
+            {
+
+                if (gm.state <= 0)
+                {
+                    print("for the " + ai_won + "th time an ai won" + identifier + " with " + the_inputs[11] * 5 + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
+                    AddReward(20000);
+                }
+                else
+                {
+                    AddReward(20000);
+                }
+                ai_won += 1;
+             
+
+                if (ai_won % 5 == 0)
+                {
+                    print(ai_won);
+                    //diff += 0.1f;
+                    print("increased diff to" + diff + "on agent " + identifier);
+
+                }
+                AddReward(1f);
+                Academy.Instance.EnvironmentStep();
+                End_episode();
+            }
+            else
+            {
+
+                if (gm.xp > 7000000)
+                {
+                    //print("ai get over 5k xp");
+                    AddReward(-5000);
+                    AddReward(0f);
+                }
+                else
+                {
+                    AddReward(-5000);
+                    AddReward(-1f);
+                }
+                //print("an ai lost" + identifier);
+                
+                Academy.Instance.EnvironmentStep();
+                End_episode();
+            }
+            maxt4 = 0;
+            
+        }
     }
     public void feed_data_and_request_decision()
     {
@@ -163,21 +244,22 @@ public class AgeOfWarAgent : Agent
             else
             {
                 new_turret_tiers[i] = turret_tiers[i] + 1;
-                if (turret_ages[i] < age)
+                new_turret_ages[i] = turret_ages[i] / 5f;
+                /*if (turret_ages[i] < age)
                 {
                     new_turret_ages[i] = turret_ages[i] - age;
                 }
                 else
                 {
                     new_turret_ages[i] = 1;
-                }
+                }*/
 
             }
             new_turret_tiers[i] /= 3f;
            
 
         }
-   
+
         
         float money = gm.money;
         float xp = gm.xp;
@@ -254,71 +336,9 @@ public class AgeOfWarAgent : Agent
 
         inputs[34] = new_turret_tiers[3];
         inputs[35] = new_turret_ages[3];
-
-
+        
         the_inputs = inputs;
-        if (gm.game_status == 0)
-        {
-            RequestDecision();
-            AddReward(0.2f);
-            AddReward(Mathf.Min(Mathf.Log10(money+1),0.4f));
-            AddReward(Mathf.Min(4,t4_money));
-            float t4_troops = player_troops_count[3];
-            t4_troops = Mathf.Min(t4_troops, 4);
-           
-            if (t4_troops >= 2)
-            {
-                //print("t4 troops on ground" + t4_troops);
-                AddReward(Mathf.Pow(2, t4_troops - 1));
-            }
-            maxt4 = Mathf.Max(maxt4, t4_troops);
 
-            //print("academy stepped");
-            Academy.Instance.EnvironmentStep();
-        }
-        else{
-            maxt4 = Mathf.Max(maxt4, player_troops_count[3]);
-            if (gm.game_status == 2)
-            {
-                
-                if (gm.state <= 0)
-                {
-                    //ai_won += 1;
-
-                    
-                    AddReward(10000);
-                }
-                else
-                {
-                    AddReward(2500);
-                }
-                print("for the " + ai_won + "th time an ai won" + identifier + " with " + player_troops_count[3] + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
-
-                if (ai_won >= 3)
-                {
-                    diff += 0.1f;
-                    print("increased diff to" + diff + "on agent " + identifier);
-                    ai_won = 0;
-                }
-            }
-            else
-            {
-                
-                if (gm.xp > 5000000)
-                {
-                    //print("ai get over 5k xp");
-                    AddReward(-500);
-                }
-                else
-                {
-                    AddReward(-500);
-                }
-                //print("an ai lost" + identifier);
-            }
-            maxt4 = 0;
-            Academy.Instance.EnvironmentStep();
-            End_episode();
-        }
         
     }
 }

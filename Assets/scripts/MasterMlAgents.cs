@@ -61,12 +61,21 @@ public class MasterMlAgents : MonoBehaviour
     {
         set_timescale();
         Spawn_environments();
+        StartCoroutine(initial());
+    }
+    IEnumerator initial()
+    {
+        yield return new WaitForSeconds(1f);
         StartCoroutine(requesting_decisions());
     }
 
     void Start()
     {
         MlAgents_Workflow();
+        //set_timescale();
+    }
+    private void Update()
+    {
         //set_timescale();
     }
 
@@ -125,11 +134,24 @@ public class MasterMlAgents : MonoBehaviour
            
         }
     }
+    void run_loop2()
+    {
+        for (int i = 0; i < length; i++)
+        {
+            AgeOfWarAgent gm = agents[i];
+
+            // gets data
+
+            gm.request_decision();
+
+        }
+    }
 
     IEnumerator requesting_decisions()
     {
-        yield return new WaitForSeconds(time_between_actions);
         run_loop();
+        yield return new WaitForSeconds(time_between_actions);
+        run_loop2();
         StartCoroutine(requesting_decisions());
         
     }

@@ -39,6 +39,7 @@ public class Bullet : MonoBehaviour
             {
                 if (TD != null)
                 {
+                    game_manger.percent_taken += TD.damage /(tr.troop_data.max_health * 1f);
                     tr.troop_data.health -= TD.damage;
                     if (TD.makes_fragments)
                     {
@@ -56,6 +57,7 @@ public class Bullet : MonoBehaviour
                 else
                 {
                     tr.troop_data.health -= damage;
+                    
                 }
                 Destroy(gameObject);
             }

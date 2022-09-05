@@ -176,6 +176,7 @@ public class Turret : MonoBehaviour
         }
         dir = dir.normalized;
         GameObject bulletgm = Instantiate(bullet, transform.position, transform.rotation);
+        bulletgm.transform.parent = transform.parent;
         Bullet b = bulletgm.GetComponent<Bullet>();
         b.direction = dir;
         b.TD = turret_data;

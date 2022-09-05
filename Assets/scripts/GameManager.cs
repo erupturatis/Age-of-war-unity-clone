@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public int[] player_troops = new int[4];
     public int[] enemy_troops = new int[4];
 
+    public float percent_taken;
     //at what point on the map is the battle taking place [0,1]
     public float battle_place = 0.5f;
 
@@ -113,13 +114,14 @@ public class GameManager : MonoBehaviour
             game_status = 1;
             end_game();
         }
-        if(enemy_hp < 0 && player_troops[3] >= 3)
+        if(enemy_hp < 0)
         {
             game_status = 2;
             end_game();
         }
         else if(enemy_hp < 0)
         {
+            print("entered else");
             // sometimes the ai has a stroke of luck and wins in the second or fourth age but the result can t be reproduced consistently
             enemy_hp += 1000;
         }
@@ -495,7 +497,7 @@ public class GameManager : MonoBehaviour
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
 
         troop_script.troop_data = tr;
-        troop_script.info = false;
+        troop_script.info = printing;
         troop_script.isPlayer = true;
         Last_friendly_spawned = gm;
         player_troops_queue.Add(gm);
@@ -536,7 +538,7 @@ public class GameManager : MonoBehaviour
 
         troop_script.game_manager = gameObject.GetComponent<GameManager>();
         troop_script.troop_data = tr;
-        troop_script.info = false;
+        troop_script.info = printing;
         troop_script.isPlayer = false;
         //print(troop_script.max_health);
         Last_enemy_spawned = gm;
@@ -1006,28 +1008,42 @@ public class GameManager : MonoBehaviour
 
     private void testing()
     {
-        
+        printing = true;
         Time.timeScale = 3;
 
         upgrade_age_player();
-        upgrade_age_player();
-        upgrade_age_player();
-        upgrade_age_player();
 
-        upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
 
         //spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(0);
-        spawn_player_troop(3);
-        spawn_player_troop(3);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
+        spawn_player_troop(1);
 
-        buy_turret_enemy(2, 3);
+        spawn_enemy_troop(0);
+
+
+      
 
    
     }
@@ -1043,21 +1059,19 @@ public class GameManager : MonoBehaviour
         buy_slot_player();
         upgrade_age_player();
         buy_slot_player();
+        
         upgrade_age_player();
+        
         buy_slot_player();
+        buy_turret_player(0, 3);
         upgrade_age_player();
-        xp = 4000000;
-        money += 500000;
-        int tr = Random.Range(0, 4);
-        if(tr == 3)
-        {
-            //passing
-        }
-        else
-        {
-            int sp = Random.Range(0, 4);
-            buy_turret_player(tr, sp);
-        }
+        buy_turret_player(Random.Range(0, 3), 0);
+        buy_turret_player(Random.Range(0, 3), 1);
+        buy_turret_player(Random.Range(0, 3), 2);
+        buy_turret_player(Random.Range(0, 3), 3);
+        xp = 5500000;
+        money += 750000;
+
         
         upgrade_age_enemy();
         upgrade_age_enemy();
@@ -1080,28 +1094,22 @@ public class GameManager : MonoBehaviour
         buy_slot_player();
         upgrade_age_player();
         buy_slot_player();
+        
         upgrade_age_player();
         buy_slot_player();
         upgrade_age_player();
-        xp = 4000000 - 100000 * Random.Range(0, 2);
-        money += 400000 - 100000 * Random.Range(-1, 2);
+        buy_turret_player(Random.Range(0, 3), 0);
+        buy_turret_player(Random.Range(0, 3), 1);
+        buy_turret_player(Random.Range(0, 3), 2);
+        buy_turret_player(Random.Range(0, 3), 3);
+        xp = 5000000 - 100000 * Random.Range(0, 2);
+        money += 800000 - 100000 * Random.Range(-1, 2);
        
         upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
         upgrade_age_enemy();
         buy_turret_enemy(2, 3);
-
-        int tr = Random.Range(0, 4);
-        if (tr == 3)
-        {
-            //passing
-        }
-        else
-        {
-            int sp = Random.Range(0, 4);
-            buy_turret_player(tr, sp);
-        }
 
         spawn_player_troop(0);
         spawn_player_troop(0);
@@ -1114,28 +1122,67 @@ public class GameManager : MonoBehaviour
 
     }
 
+    void CustomState3()
+    {
+        upgrade_age_player();
+        buy_slot_player();
+        upgrade_age_player();
+        buy_slot_player();
+        buy_slot_player();
+        upgrade_age_player();
+        upgrade_age_player();
+        buy_turret_player(Random.Range(0, 3), 0);
+        buy_turret_player(Random.Range(0, 3), 1);
+        buy_turret_player(Random.Range(0, 3), 2);
+        buy_turret_player(Random.Range(0, 3), 3);
+
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        upgrade_age_enemy();
+        buy_turret_enemy(2, 3);
+
+        
+
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(Random.Range(0, 3));
+    }
+
 
 
 
     void Start()
     {
         enemy_ai = GetComponent<Enemy_AI>();
-        state = Random.Range(2, 3);
+        state = Random.Range(-10, 3);
         state = 0;
-        if(state <= 0)
+        if (state <= 0)
         {
             Custom_state0();
         }
         else
-        if(state == 1)
+        if (state == 1)
         {
             Custom_state1();
-        }else
-        if(state == 2)
+        }
+        else
+        if (state == 2)
         {
             Custom_state2();
+        }else
+        if (state == 3)
+        {
+            CustomState3();
         }
-     
+
+
+
         StartCoroutine(training());
     }
 

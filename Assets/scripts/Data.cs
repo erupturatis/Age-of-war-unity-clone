@@ -12,11 +12,12 @@ public class Data : MonoBehaviour
         public int[] troop_training_times = { 40, 40, 100, 70, 50, 100, 100, 100, 200, 100, 100, 300, 100, 100, 300, 100 };
         protected int[] troop_hps = { 55, 42, 160, 100, 80, 300, 200, 160, 600, 350, 300, 1200, 1000, 800, 3000, 4000 };
         protected int[] troop_melee_damages = { 16, 10, 40, 35, 20, 60, 79, 40, 120, 100, 60, 300, 250, 130, 600, 400 };
-        protected int[] troop_ranged_damages = { 0, 8, 0, 0, 20, 0, 0, 20, 0, 0, 30, 0, 0, 80, 0, 400 };
+        protected int[] troop_ranged_damages = { 0, 8, 0, 0, 14, 0, 0, 20, 0, 0, 30, 0, 0, 80, 0, 400 };
 
         protected int[] troop_melee_ranges = { 20, 20, 20, 20, 20, 20, 25, 25, 25, 25, 25, 20, 20, 20, 20, 20 };
         protected int[] troop_ranged_ranges = { 0, 100, 0, 0, 130, 0, 0, 130, 0, 0, 130, 0, 0, 110, 0, 130 };
         protected int[] troop_lengths = { 20, 20, 80, 20, 20, 80, 20, 20, 20, 20, 20, 120, 20, 20, 100, 20 };
+        protected int[] frames_wait_attack = {20,20,45,20,20,60,25,25,25,25,25,100,40,40,100,40 };
 
         // the speed of the initial attack is different from the others
         protected float[] troop_melee_first_speeds = { 0.43f, 0.43f, 0.32f, 0.62f, 0.62f, 0.35f, 0.32f, 0.15f, 0.65f, 0.17f, 0.07f, 0.55f, 0.32f, 0.32f, 0.25f, 0.32f };
@@ -73,6 +74,7 @@ public class Data : MonoBehaviour
         public int cost = 15;
         public int training_time = 40;
         public int health = 55;
+        public int max_health = 55;
         public int melee_damage = 16;
         public int ranged_damage = 0;
 
@@ -89,6 +91,8 @@ public class Data : MonoBehaviour
         public float ranged_first_speed = 0f; // same for all troops
         public float ranged_walking_speed = 0f;
         public float ranged_standing_speed = 0f;
+
+        public float attack_pause = 20f;
 
         public bool just_melee = true;
 
@@ -114,6 +118,9 @@ public class Data : MonoBehaviour
             ranged_standing_speed = troop_ranged_speeds[id];
 
             just_melee = troop_type[id];
+            attack_pause = frames_wait_attack[id];
+            max_health = health;
+
         }
         
     }

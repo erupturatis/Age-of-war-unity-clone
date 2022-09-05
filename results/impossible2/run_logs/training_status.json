@@ -1,0 +1,65 @@
+{
+    "AgeAgent": {
+        "checkpoints": [
+            {
+                "steps": 2999887,
+                "file_path": "results\\impossible2\\AgeAgent\\AgeAgent-2999887.onnx",
+                "reward": 118.60211181640625,
+                "creation_time": 1662088655.2623513,
+                "auxillary_file_paths": [
+                    "results\\impossible2\\AgeAgent\\AgeAgent-2999887.pt"
+                ]
+            },
+            {
+                "steps": 3499714,
+                "file_path": "results\\impossible2\\AgeAgent\\AgeAgent-3499714.onnx",
+                "reward": -20.777002970377605,
+                "creation_time": 1662093656.130867,
+                "auxillary_file_paths": [
+                    "results\\impossible2\\AgeAgent\\AgeAgent-3499714.pt"
+                ]
+            },
+            {
+                "steps": 3999396,
+                "file_path": "results\\impossible2\\AgeAgent\\AgeAgent-3999396.onnx",
+                "reward": -171.37294387817383,
+                "creation_time": 1662098651.6945212,
+                "auxillary_file_paths": [
+                    "results\\impossible2\\AgeAgent\\AgeAgent-3999396.pt"
+                ]
+            },
+            {
+                "steps": 4499921,
+                "file_path": "results\\impossible2\\AgeAgent\\AgeAgent-4499921.onnx",
+                "reward": -117.09897867838542,
+                "creation_time": 1662103627.6802068,
+                "auxillary_file_paths": [
+                    "results\\impossible2\\AgeAgent\\AgeAgent-4499921.pt"
+                ]
+            },
+            {
+                "steps": 4538617,
+                "file_path": "results\\impossible2\\AgeAgent\\AgeAgent-4538617.onnx",
+                "reward": 169.40615463256836,
+                "creation_time": 1662103998.2495837,
+                "auxillary_file_paths": [
+                    "results\\impossible2\\AgeAgent\\AgeAgent-4538617.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 4538617,
+            "file_path": "results\\impossible2\\AgeAgent.onnx",
+            "reward": 169.40615463256836,
+            "creation_time": 1662103998.2495837,
+            "auxillary_file_paths": [
+                "results\\impossible2\\AgeAgent\\AgeAgent-4538617.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}
