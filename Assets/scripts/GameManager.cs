@@ -1126,32 +1126,29 @@ public class GameManager : MonoBehaviour
     {
         upgrade_age_player();
         buy_slot_player();
-        upgrade_age_player();
-        buy_slot_player();
-        buy_slot_player();
-        upgrade_age_player();
-        upgrade_age_player();
-        buy_turret_player(Random.Range(0, 3), 0);
-        buy_turret_player(Random.Range(0, 3), 1);
-        buy_turret_player(Random.Range(0, 3), 2);
-        buy_turret_player(Random.Range(0, 3), 3);
 
         upgrade_age_enemy();
         upgrade_age_enemy();
-        upgrade_age_enemy();
-        upgrade_age_enemy();
+
         buy_turret_enemy(2, 3);
 
-        
-
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
+        spawn_player_troop(0);
         spawn_player_troop(0);
         spawn_player_troop(0);
 
-        spawn_enemy_troop(Random.Range(0, 3));
-        spawn_enemy_troop(Random.Range(0, 3));
-        spawn_enemy_troop(Random.Range(0, 3));
-        spawn_enemy_troop(Random.Range(0, 3));
-        spawn_enemy_troop(Random.Range(0, 3));
+        spawn_enemy_troop(0);
+
     }
 
 
@@ -1210,7 +1207,7 @@ public class GameManager : MonoBehaviour
         else
         {
             troop_queue tr = training_queue[0];
-            yield return new WaitForSeconds(tr.training/data_object.FPS);
+            yield return new WaitForSeconds(1.2f*tr.training/data_object.FPS);
             spawn_player_troop(tr.tier, tr.age);
             training_queue.RemoveAt(0);
         }
