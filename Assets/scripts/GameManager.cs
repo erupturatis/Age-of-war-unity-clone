@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public int player_age = 1;
     public int enemy_age = 1;
     public int identifier = 1;
+    public int iter = 0;
 
     public float ability_time = 0;
 
@@ -105,7 +106,7 @@ public class GameManager : MonoBehaviour
     }
     public void check_game_status()
     {
-        if(xp > 13000000 && player_troops[3] < 3)
+        if(xp > 7000000 && player_troops[3] < 3)
         {
             game_status = 1;
         }
@@ -329,7 +330,7 @@ public class GameManager : MonoBehaviour
         {
             action = 3;
             aux = 2;
-            //print("action22 taken");
+            
         }
 
 
@@ -681,6 +682,10 @@ public class GameManager : MonoBehaviour
     }
     public void buy_turret_player(int tier, int spot, int age = 0)
     {
+        if(tier == -1)
+        {
+            return;
+        }
         if (age == 0)
         {
             age = player_age;
@@ -1059,16 +1064,16 @@ public class GameManager : MonoBehaviour
         buy_slot_player();
         upgrade_age_player();
         buy_slot_player();
-        
+        buy_turret_player(Random.Range(-1, 3), 1);
+        buy_turret_player(Random.Range(-1, 3), 2);
         upgrade_age_player();
         
         buy_slot_player();
-        buy_turret_player(0, 3);
+     
         upgrade_age_player();
-        buy_turret_player(Random.Range(0, 3), 0);
-        buy_turret_player(Random.Range(0, 3), 1);
-        buy_turret_player(Random.Range(0, 3), 2);
-        buy_turret_player(Random.Range(0, 3), 3);
+        buy_turret_player(Random.Range(-1, 3), 0);
+        
+        buy_turret_player(Random.Range(-1, 3), 3);
         xp = 5500000;
         money += 750000;
 
@@ -1098,10 +1103,10 @@ public class GameManager : MonoBehaviour
         upgrade_age_player();
         buy_slot_player();
         upgrade_age_player();
-        buy_turret_player(Random.Range(0, 3), 0);
-        buy_turret_player(Random.Range(0, 3), 1);
-        buy_turret_player(Random.Range(0, 3), 2);
-        buy_turret_player(Random.Range(0, 3), 3);
+        buy_turret_player(Random.Range(-1, 3), 0);
+        buy_turret_player(Random.Range(-1, 3), 1);
+        buy_turret_player(Random.Range(-1, 3), 2);
+        buy_turret_player(Random.Range(-1, 3), 3);
         xp = 5000000 - 100000 * Random.Range(0, 2);
         money += 800000 - 100000 * Random.Range(-1, 2);
        
@@ -1157,7 +1162,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         enemy_ai = GetComponent<Enemy_AI>();
-        state = Random.Range(-10, 3);
+        state = Random.Range(-17, 3);
+        /*if(iter > 1000)
+        {
+            state = 0;
+        }
+        else
+        {
+            state = Random.Range(1, 3);
+        }
+    */
         state = 0;
         if (state <= 0)
         {

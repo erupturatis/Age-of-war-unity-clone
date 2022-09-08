@@ -81,7 +81,7 @@ public class Data : MonoBehaviour
         public int range_ranged = 0;
         public int range_melee = 20;
 
-        public float speed = 30f; // the game has a standard move speed for all troops
+        public float speed = 40f; // the game has a standard move speed for all troops
         // a troop walks 450 units in 11.5 seconds so the speed should be 450/11.5
         public int length = 20;
 

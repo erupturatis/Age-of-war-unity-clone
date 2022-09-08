@@ -21,6 +21,7 @@ public class AgeOfWarAgent : Agent
     [HideInInspector] public GameObject env_object;
     [HideInInspector] public MasterMlAgents AgentMaster;
     Data.Only_Data od;
+    public bool base2 = false;
     float[] the_inputs;
     float maxt4 = 0;
     public int iter = 0;
@@ -28,11 +29,26 @@ public class AgeOfWarAgent : Agent
     public override void OnActionReceived(ActionBuffers actions)
     {
         //print("action taken");
-        env.take_action(actions.DiscreteActions[0]);
-        if (actions.DiscreteActions[0] == 13)
+        int action = actions.DiscreteActions[0];
+        int init = 0;
+        if (base2)
         {
-            AddReward(7.5f);
+            action += actions.DiscreteActions[1] * 2;
+            action += actions.DiscreteActions[2] * 4;
+            action += actions.DiscreteActions[3] * 8;
+            action += actions.DiscreteActions[4] * 16;
+            if(action > 22)
+            {
+                action = 13;
+                init = 1;
+            }
         }
+        if (action == 13 && init == 0)
+        {
+            AddReward(0.75f);
+        }
+        env.take_action(action);
+        
         /*env.act1(actions.DiscreteActions[0]);
         
         env.act2(actions.DiscreteActions[1]);
@@ -63,7 +79,7 @@ public class AgeOfWarAgent : Agent
         env.scale = 1;
         env.diff = diff;
         env.identifier = identifier;
-        env.state = iter % 10 - 7;
+        env.iter = iter;
         //print(Academy.Instance.StepCount);
     }
 
@@ -93,11 +109,12 @@ public class AgeOfWarAgent : Agent
         GameManager gm = env;
         if (gm.game_status == 0)
         {
-            AddReward(0.2f);
-            AddReward(gm.percent_taken * 10);
+            AddReward(0.02f);
+            AddReward(gm.percent_taken);
             
             gm.percent_taken = 0;
-            AddReward(Mathf.Min(20,gm.money/50000));
+            AddReward(Mathf.Min(20,gm.money/50000)/10);
+            AddReward(Mathf.Min(gm.money / od.troop_costs[(gm.player_age - 1) * 3 + 2],10)/10);
             // killing enemies with turrets
             float t4_troops = the_inputs[11]*5;
             t4_troops = Mathf.Min(t4_troops, 4);
@@ -105,7 +122,7 @@ public class AgeOfWarAgent : Agent
             if (t4_troops >= 3)
             {
                 //print("t4 troops on ground" + t4_troops);
-                AddReward(Mathf.Pow(5, t4_troops - 1));
+                AddReward(Mathf.Pow(4, t4_troops - 1));
             }
             maxt4 = Mathf.Max(maxt4, t4_troops);
             Academy.Instance.EnvironmentStep();
@@ -121,21 +138,24 @@ public class AgeOfWarAgent : Agent
 
                 if (gm.state <= 0)
                 {
-                    print("for the " + ai_won + "th time an ai won" + identifier + " with " + the_inputs[11] * 5 + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
-                    AddReward(20000);
+                    print("AAAAAAAAAAAfor the " + ai_won + "th time an ai won" + identifier + " with " + the_inputs[11] * 5 + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
+
+                    AddReward(5000);
                 }
                 else
                 {
-                    AddReward(20000);
+                    AddReward(1000);
                 }
+                print("for the " + ai_won + "th time an ai won" + identifier + " with " + the_inputs[11] * 5 + " t4 troops and a max of " + maxt4 + " on state " + gm.state);
+
                 ai_won += 1;
              
 
-                if (ai_won % 5 == 0)
+                if (ai_won % 10 == 0)
                 {
                     print(ai_won);
                     //diff += 0.1f;
-                    print("increased diff to" + diff + "on agent " + identifier);
+                    //print("increased diff to" + diff + "on agent " + identifier);
 
                 }
                 AddReward(1f);
@@ -145,15 +165,15 @@ public class AgeOfWarAgent : Agent
             else
             {
 
-                if (gm.xp > 13000000)
+                if (gm.xp > 7000000)
                 {
                     //print("ai get over 5k xp");
-                    AddReward(-5000);
+                    AddReward(-1000);
                     AddReward(0f);
                 }
                 else
                 {
-                    AddReward(-5000);
+                    AddReward(-1000);
                     AddReward(-1f);
                 }
                 //print("an ai lost" + identifier);

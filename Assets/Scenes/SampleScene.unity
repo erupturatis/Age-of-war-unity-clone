@@ -601,15 +601,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   number_of_envs: 1
   env_speed: 20
-  env_agent: {fileID: 8513288364910891857, guid: 41bc4ce7b833e3f45907c5bd74aefdba, type: 3}
+  env_agent: {fileID: 2215012691385486050, guid: 98cc8af2a4924804bac0f0451783a74a, type: 3}
   env_template: {fileID: 8366924046424073057, guid: 48eb3b25263efb742b0f181a6c360cee, type: 3}
   data_object: {fileID: 2019908025}
   agents: []
   length: 0
   diff: 1.35
   state: 0
-  time_between_actions: 1.4
-  tm: 1
+  time_between_actions: 1.5
+  tm: 0
 --- !u!4 &2019908027
 Transform:
   m_ObjectHideFlags: 0
